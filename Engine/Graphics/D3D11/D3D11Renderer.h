@@ -1,0 +1,47 @@
+﻿#pragma once
+#include "Core/EngineAPI.h"
+#include <d3d11.h>
+#include <DirectXMath.h>
+#include <wrl/client.h>
+
+using Microsoft::WRL::ComPtr;
+
+struct Vertex
+{
+    DirectX::XMFLOAT3 position;
+    DirectX::XMFLOAT4 color;
+};
+
+class ENGINE_API D3D11Renderer
+{
+public:
+    D3D11Renderer();
+    ~D3D11Renderer();
+
+    bool Initialize(HWND hwnd, int width, int height);
+    void Shutdown();
+    void Render();
+    void OnResize(int width, int height);
+
+private:
+    bool CreateDeviceAndSwapChain(HWND hwnd, int width, int height);
+    bool CreateRenderTargetView();
+    bool CreateVertexBuffer();
+    bool CompileShaders();
+    bool CreateInputLayout();
+
+    #pragma warning(push)
+    #pragma warning(disable: 4251)  // ComPtr는 dll-interface가 필요하지 않음
+    ComPtr<ID3D11Device> m_device;
+    ComPtr<ID3D11DeviceContext> m_deviceContext;
+    ComPtr<IDXGISwapChain> m_swapChain;
+    ComPtr<ID3D11RenderTargetView> m_renderTargetView;
+    ComPtr<ID3D11Buffer> m_vertexBuffer;
+    ComPtr<ID3D11VertexShader> m_vertexShader;
+    ComPtr<ID3D11PixelShader> m_pixelShader;
+    ComPtr<ID3D11InputLayout> m_inputLayout;
+    #pragma warning(pop)
+
+    int m_width;
+    int m_height;
+};

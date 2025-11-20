@@ -1,0 +1,71 @@
+# EditorConfig for ExcepEngine
+# https://editorconfig.org
+
+root = true
+
+# All files
+[*]
+charset = utf-8-bom
+end_of_line = crlf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# C++ files
+[*.{cpp,h,hpp,c}]
+indent_style = space
+indent_size = 4
+max_line_length = 120
+
+# Visual Studio project files
+[*.{vcxproj,vcxproj.filters,sln}]
+charset = utf-8-bom
+indent_style = space
+indent_size = 2
+
+# Resource files (Windows specific)
+[*.rc]
+charset = utf-8-bom
+
+# Resource header files
+[Resource.h]
+charset = utf-8-bom
+
+# Markdown files
+[*.md]
+charset = utf-8
+indent_style = space
+indent_size = 2
+max_line_length = 80
+
+# JSON files
+[*.json]
+charset = utf-8
+indent_style = space
+indent_size = 2
+
+# YAML files
+[*.{yml,yaml}]
+charset = utf-8
+indent_style = space
+indent_size = 2
+
+# Shader files (HLSL)
+[*.{hlsl,fx,fxh}]
+charset = utf-8
+indent_style = space
+indent_size = 4
+
+# Visual Studio specific settings for C++
+[*.{cpp,h,hpp,c}]
+# Formatting
+cpp_indent_braces = false
+cpp_indent_case_contents = true
+cpp_indent_case_labels = true
+cpp_indent_namespaces = false
+cpp_new_line_before_open_brace_namespace = same_line
+cpp_new_line_before_open_brace_type = same_line
+cpp_new_line_before_open_brace_function = same_line
+cpp_new_line_before_open_brace_block = same_line
+cpp_space_before_function_open_parenthesis = never
+cpp_space_within_parameter_list_parentheses = false
+cpp_space_after_keywords_in_control_flow_statements = true
