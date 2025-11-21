@@ -9,6 +9,7 @@
 
 // 엔진 컨테이너
 #include "Container/DynamicArray.h"
+#include "Container/StaticArray.h"
 
 // C++ 표준 라이브러리
 #include <memory>
