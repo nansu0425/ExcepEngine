@@ -80,7 +80,7 @@ public:
     /// @brief Key 존재 여부 확인
     /// @param key 확인할 키
     /// @return 존재하면 true, 없으면 false
-    bool8 HasKey(const K& key) const
+    bool8 Contains(const K& key) const
     {
         return m_data.find(key) != m_data.end();
     }

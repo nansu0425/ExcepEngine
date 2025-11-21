@@ -12,7 +12,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Container\HashMap.h">
+    <ClInclude Include="Container\TreeSet.h">
       <Filter>Container</Filter>
     </ClInclude>
     <ClInclude Include="Math\Vector3.h">
@@ -42,6 +42,9 @@
     <ClInclude Include="Container\TreeMap.h">
       <Filter>Container</Filter>
     </ClInclude>
+    <ClInclude Include="Container\HashMap.h">
+      <Filter>Container</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Graphics\D3D11\Shaders\Default.vs.hlsl">
@@ -53,22 +56,22 @@
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Container">
-      <UniqueIdentifier>{b8587f21-7a45-4a62-b895-eae0c02d5159}</UniqueIdentifier>
+      <UniqueIdentifier>{4e3626bc-e9f3-4ea6-be9f-92ed94fe9906}</UniqueIdentifier>
     </Filter>
     <Filter Include="Math">
-      <UniqueIdentifier>{36a0f584-2d52-4d7e-904e-be32ddfec57c}</UniqueIdentifier>
+      <UniqueIdentifier>{c1ce7449-7e27-4f4e-8356-c7365d20d9ea}</UniqueIdentifier>
     </Filter>
     <Filter Include="Core">
-      <UniqueIdentifier>{c729834a-699b-4a27-9077-593ef1f01e42}</UniqueIdentifier>
+      <UniqueIdentifier>{10478042-edd3-4037-b50b-be4bd9e91448}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics">
-      <UniqueIdentifier>{b972cfe8-dd17-4cc5-8739-346211a0f08f}</UniqueIdentifier>
+      <UniqueIdentifier>{398f5b30-e777-4f20-80ea-233a2a349355}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics\D3D11">
-      <UniqueIdentifier>{9cb77935-5b82-407e-8fe9-9b0999e89e78}</UniqueIdentifier>
+      <UniqueIdentifier>{3d165b83-2e89-45c7-80c3-bb090077e3dc}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics\D3D11\Shaders">
-      <UniqueIdentifier>{4399b2ca-a0d3-45de-85b9-15c89fae8aef}</UniqueIdentifier>
+      <UniqueIdentifier>{3edce0a3-96b8-4202-b297-b1abef0bf352}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
