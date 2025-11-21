@@ -148,7 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Graphics\D3D11\D3D11Renderer.cpp" />
-    <ClCompile Include="Platform\Windows\DllMain.cpp" />
+    <ClCompile Include="Core\DllMain.cpp" />
     <ClCompile Include="Core\Pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

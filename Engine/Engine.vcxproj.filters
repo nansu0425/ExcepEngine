@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Core\Pch.cpp">
+    <ClCompile Include="Core\DllMain.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="Platform\Windows\DllMain.cpp">
-      <Filter>Platform\Windows</Filter>
+    <ClCompile Include="Core\Pch.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="Graphics\D3D11\D3D11Renderer.cpp">
       <Filter>Graphics\D3D11</Filter>
@@ -24,19 +24,13 @@
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
-      <UniqueIdentifier>{4ee6ebd7-add4-45a0-b4cd-b92ce281b570}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Platform">
-      <UniqueIdentifier>{8daaa2e3-d8aa-47f4-9ded-d300cdb0de48}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Platform\Windows">
-      <UniqueIdentifier>{84012dd6-95ff-45d4-8494-b62f830f34be}</UniqueIdentifier>
+      <UniqueIdentifier>{ec2266fc-47dd-4752-821f-8abfbd78bb9e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics">
-      <UniqueIdentifier>{ca2b6d27-0ad8-4e0b-b22b-2261604ba064}</UniqueIdentifier>
+      <UniqueIdentifier>{e91c47bb-075f-4ecb-9287-1a097cf07d88}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics\D3D11">
-      <UniqueIdentifier>{565b13b7-0b00-44a4-9e7c-ee084ea6068b}</UniqueIdentifier>
+      <UniqueIdentifier>{569c9bd8-e60f-4915-bcd4-0a874467e8d0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

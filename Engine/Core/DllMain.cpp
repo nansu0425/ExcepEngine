@@ -1,5 +1,4 @@
-﻿// DllMain.cpp : DLL 애플리케이션의 진입점을 정의합니다.
-#include "Core/Pch.h"
+﻿#include "Core/Pch.h"
 
 BOOL APIENTRY DllMain( HMODULE hModule,
                        DWORD  ul_reason_for_call,
