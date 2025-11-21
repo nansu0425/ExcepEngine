@@ -2,6 +2,8 @@
 #include <memory>
 #include "Graphics/D3D11/D3D11Renderer.h"
 
+using Excep::Graphics::D3D11Renderer;
+
 #define MAX_LOADSTRING 100
 
 // 전역 변수

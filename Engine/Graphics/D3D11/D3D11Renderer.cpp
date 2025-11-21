@@ -43,6 +43,11 @@ float4 main(PS_INPUT input) : SV_TARGET
 }
 )";
 
+namespace Excep
+{
+namespace Graphics
+{
+
 D3D11Renderer::D3D11Renderer()
     : m_width(0), m_height(0)
 {
@@ -365,3 +370,6 @@ bool D3D11Renderer::CreateRasterizerState()
     HRESULT hr = m_device->CreateRasterizerState(&rasterizerDesc, m_rasterizerState.GetAddressOf());
     return SUCCEEDED(hr);
 }
+
+} // namespace Graphics
+} // namespace Excep

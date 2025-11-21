@@ -7,6 +7,11 @@ using Microsoft::WRL::ComPtr;
 using Excep::Math::Vector3;
 using Excep::Math::Vector4;
 
+namespace Excep
+{
+namespace Graphics
+{
+
 struct Vertex
 {
     Vector3 position;
@@ -48,3 +53,6 @@ private:
     int32 m_width;
     int32 m_height;
 };
+
+} // namespace Graphics
+} // namespace Excep
