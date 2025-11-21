@@ -107,7 +107,7 @@ public:
 
     /// @brief 배열의 요소 개수 반환
     /// @return 요소 개수
-    uint64 Size() const
+    uint64 GetSize() const
     {
         return static_cast<uint64>(m_data.size());
     }
@@ -175,14 +175,14 @@ public:
 
     /// @brief 배열의 원시 데이터 포인터 반환
     /// @return 배열의 첫 번째 요소를 가리키는 포인터
-    T* Data()
+    T* GetData()
     {
         return m_data.data();
     }
 
     /// @brief 배열의 원시 데이터 포인터 반환 (const 버전)
     /// @return 배열의 첫 번째 요소를 가리키는 const 포인터
-    const T* Data() const
+    const T* GetData() const
     {
         return m_data.data();
     }
