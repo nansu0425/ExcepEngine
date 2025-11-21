@@ -51,23 +51,9 @@ public:
         m_data.push_back(value);
     }
 
-    /// @brief 배열 끝에 요소 추가 (Add와 동일)
-    /// @param value 추가할 요소
-    void Push(const T& value)
-    {
-        m_data.push_back(value);
-    }
-
     /// @brief 배열 끝에 요소 추가 (move semantics)
     /// @param value 추가할 요소
     void Add(T&& value)
-    {
-        m_data.push_back(std::move(value));
-    }
-
-    /// @brief 배열 끝에 요소 추가 (move semantics, Push와 동일)
-    /// @param value 추가할 요소
-    void Push(T&& value)
     {
         m_data.push_back(std::move(value));
     }
@@ -160,7 +146,7 @@ public:
     /// @brief 인덱스로 요소 접근 (경계 검사 수행)
     /// @param index 요소의 인덱스
     /// @return 요소의 참조
-    T& At(uint64 index)
+    T& GetAt(uint64 index)
     {
         return m_data.at(index);
     }
@@ -168,9 +154,37 @@ public:
     /// @brief 인덱스로 요소 접근 (경계 검사 수행, const 버전)
     /// @param index 요소의 인덱스
     /// @return 요소의 const 참조
-    const T& At(uint64 index) const
+    const T& GetAt(uint64 index) const
     {
         return m_data.at(index);
+    }
+
+    /// @brief 배열의 첫 번째 요소 참조 반환
+    /// @return 첫 번째 요소의 참조
+    T& GetFront()
+    {
+        return m_data.front();
+    }
+
+    /// @brief 배열의 첫 번째 요소 참조 반환 (const 버전)
+    /// @return 첫 번째 요소의 const 참조
+    const T& GetFront() const
+    {
+        return m_data.front();
+    }
+
+    /// @brief 배열의 마지막 요소 참조 반환
+    /// @return 마지막 요소의 참조
+    T& GetBack()
+    {
+        return m_data.back();
+    }
+
+    /// @brief 배열의 마지막 요소 참조 반환 (const 버전)
+    /// @return 마지막 요소의 const 참조
+    const T& GetBack() const
+    {
+        return m_data.back();
     }
 
     /// @brief 배열의 원시 데이터 포인터 반환

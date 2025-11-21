@@ -80,7 +80,7 @@ public:
     /// @brief Key 존재 여부 확인
     /// @param key 확인할 키
     /// @return 존재하면 true, 없으면 false
-    bool8 HasKey(const K& key) const
+    bool8 Contains(const K& key) const
     {
         return m_data.find(key) != m_data.end();
     }
@@ -96,7 +96,7 @@ public:
     /// @brief Key로 Value 접근 (경계 검사, 없으면 예외)
     /// @param key 키
     /// @return Value의 참조
-    V& At(const K& key)
+    V& GetAt(const K& key)
     {
         return m_data.at(key);
     }
@@ -104,7 +104,7 @@ public:
     /// @brief Key로 Value 접근 (경계 검사, 없으면 예외, const 버전)
     /// @param key 키
     /// @return Value의 const 참조
-    const V& At(const K& key) const
+    const V& GetAt(const K& key) const
     {
         return m_data.at(key);
     }

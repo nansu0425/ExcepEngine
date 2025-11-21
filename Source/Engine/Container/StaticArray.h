@@ -75,7 +75,7 @@ public:
     /// @brief 인덱스로 요소 접근 (경계 검사 수행)
     /// @param index 요소의 인덱스
     /// @return 요소의 참조
-    T& At(uint64 index)
+    T& GetAt(uint64 index)
     {
         return m_data.at(index);
     }
@@ -83,7 +83,7 @@ public:
     /// @brief 인덱스로 요소 접근 (경계 검사 수행, const 버전)
     /// @param index 요소의 인덱스
     /// @return 요소의 const 참조
-    const T& At(uint64 index) const
+    const T& GetAt(uint64 index) const
     {
         return m_data.at(index);
     }
