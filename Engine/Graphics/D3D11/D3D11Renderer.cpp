@@ -23,7 +23,7 @@ D3D11Renderer::~D3D11Renderer()
     Shutdown();
 }
 
-bool D3D11Renderer::Initialize(HWND hwnd, int32 width, int32 height)
+bool8 D3D11Renderer::Initialize(HWND hwnd, int32 width, int32 height)
 {
     m_width = width;
     m_height = height;
@@ -149,7 +149,7 @@ void D3D11Renderer::OnResize(int32 width, int32 height)
     m_deviceContext->RSSetViewports(1, &viewport);
 }
 
-bool D3D11Renderer::CreateDeviceAndSwapChain(HWND hwnd, int32 width, int32 height)
+bool8 D3D11Renderer::CreateDeviceAndSwapChain(HWND hwnd, int32 width, int32 height)
 {
     DXGI_SWAP_CHAIN_DESC swapChainDesc = {};
     swapChainDesc.BufferCount = 2;
@@ -189,7 +189,7 @@ bool D3D11Renderer::CreateDeviceAndSwapChain(HWND hwnd, int32 width, int32 heigh
     return SUCCEEDED(hr);
 }
 
-bool D3D11Renderer::CreateRenderTargetView()
+bool8 D3D11Renderer::CreateRenderTargetView()
 {
     ComPtr<ID3D11Texture2D> backBuffer;
     HRESULT hr = m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)backBuffer.GetAddressOf());
@@ -202,7 +202,7 @@ bool D3D11Renderer::CreateRenderTargetView()
     return SUCCEEDED(hr);
 }
 
-bool D3D11Renderer::CreateVertexBuffer()
+bool8 D3D11Renderer::CreateVertexBuffer()
 {
     // 삼각형 정점 (CCW 순서)
     Vertex vertices[] =
@@ -225,7 +225,7 @@ bool D3D11Renderer::CreateVertexBuffer()
     return SUCCEEDED(hr);
 }
 
-bool D3D11Renderer::CompileShaders()
+bool8 D3D11Renderer::CompileShaders()
 {
     // Vertex Shader 파일 읽기
     std::string vertexShaderSource;
@@ -327,13 +327,13 @@ bool D3D11Renderer::CompileShaders()
     return SUCCEEDED(hr);
 }
 
-bool D3D11Renderer::CreateInputLayout()
+bool8 D3D11Renderer::CreateInputLayout()
 {
     // 입력 레이아웃은 CompileShaders에서 생성됨
     return true;
 }
 
-bool D3D11Renderer::CreateRasterizerState()
+bool8 D3D11Renderer::CreateRasterizerState()
 {
     D3D11_RASTERIZER_DESC rasterizerDesc = {};
     rasterizerDesc.FillMode = D3D11_FILL_SOLID;
@@ -351,15 +351,15 @@ bool D3D11Renderer::CreateRasterizerState()
     return SUCCEEDED(hr);
 }
 
-bool D3D11Renderer::ReadShaderFile(const std::wstring& filename, std::string& outSource)
+bool8 D3D11Renderer::ReadShaderFile(const std::wstring& filename, std::string& outSource)
 {
     // 실행 파일의 경로 얻기
-    wchar_t exePath[MAX_PATH];
+    char16 exePath[MAX_PATH];
     GetModuleFileNameW(nullptr, exePath, MAX_PATH);
 
     // 실행 파일이 있는 디렉토리 추출
     std::wstring exeDir = exePath;
-    size_t lastSlash = exeDir.find_last_of(L"\\/");
+    uint64 lastSlash = exeDir.find_last_of(L"\\/");
     if (lastSlash != std::wstring::npos)
     {
         exeDir = exeDir.substr(0, lastSlash);

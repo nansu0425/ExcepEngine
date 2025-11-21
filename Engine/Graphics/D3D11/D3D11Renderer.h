@@ -24,19 +24,19 @@ public:
     D3D11Renderer();
     ~D3D11Renderer();
 
-    bool Initialize(HWND hwnd, int32 width, int32 height);
+    bool8 Initialize(HWND hwnd, int32 width, int32 height);
     void Shutdown();
     void Render();
     void OnResize(int32 width, int32 height);
 
 private:
-    bool CreateDeviceAndSwapChain(HWND hwnd, int32 width, int32 height);
-    bool CreateRenderTargetView();
-    bool CreateVertexBuffer();
-    bool CompileShaders();
-    bool CreateInputLayout();
-    bool CreateRasterizerState();
-    bool ReadShaderFile(const std::wstring& filename, std::string& outSource);
+    bool8 CreateDeviceAndSwapChain(HWND hwnd, int32 width, int32 height);
+    bool8 CreateRenderTargetView();
+    bool8 CreateVertexBuffer();
+    bool8 CompileShaders();
+    bool8 CreateInputLayout();
+    bool8 CreateRasterizerState();
+    bool8 ReadShaderFile(const std::wstring& filename, std::string& outSource);
 
     #pragma warning(push)
     #pragma warning(disable: 4251)  // ComPtr는 dll-interface가 필요하지 않음
