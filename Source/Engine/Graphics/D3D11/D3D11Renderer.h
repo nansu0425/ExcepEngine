@@ -95,6 +95,14 @@ public:
     /// @param objects 오브젝트들의 배열
     void RenderObjects(const Container::DynamicArray<SpawnedObject>& objects);
 
+    /// @brief 렌더링 시작 (Clear + 렌더 타겟 설정)
+    void BeginRender();
+
+    /// @brief 개별 메시를 렌더링합니다
+    /// @param type 메시 타입
+    /// @param position 메시 위치
+    void RenderSingleMesh(MeshType type, const Math::Vector3& position);
+
 private:
     bool8 CreateDeviceAndSwapChain(HWND hwnd, int32 width, int32 height);
     bool8 CreateRenderTargetView();

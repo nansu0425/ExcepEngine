@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Input\InputManager.cpp">
-      <Filter>Input</Filter>
+    <ClCompile Include="World\CRenderer.cpp">
+      <Filter>World</Filter>
     </ClCompile>
     <ClCompile Include="Core\DllMain.cpp">
       <Filter>Core</Filter>
@@ -10,13 +10,31 @@
     <ClCompile Include="Core\Pch.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="World\World.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="World\WObject.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="World\CComponent.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="World\CTransform.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="World\CMeshRenderer.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\InputManager.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
     <ClCompile Include="Graphics\D3D11\D3D11Renderer.cpp">
       <Filter>Graphics\D3D11</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Input\InputManager.h">
-      <Filter>Input</Filter>
+    <ClInclude Include="World\CRenderer.h">
+      <Filter>World</Filter>
     </ClInclude>
     <ClInclude Include="Math\Vector3.h">
       <Filter>Math</Filter>
@@ -32,6 +50,24 @@
     </ClInclude>
     <ClInclude Include="Core\Pch.h">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="World\World.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="World\WObject.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="World\CComponent.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="World\CTransform.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="World\CMeshRenderer.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\InputManager.h">
+      <Filter>Input</Filter>
     </ClInclude>
     <ClInclude Include="Memory\UniquePtr.h">
       <Filter>Memory</Filter>
@@ -82,29 +118,32 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Input">
-      <UniqueIdentifier>{654ad932-d31e-4aa5-a7d4-dff4e9a1e15f}</UniqueIdentifier>
+    <Filter Include="World">
+      <UniqueIdentifier>{53dc660d-85a6-4e2b-a66a-98338bb5472d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Math">
-      <UniqueIdentifier>{bf4156c3-5e48-4559-9a7f-2bb0a99f70e8}</UniqueIdentifier>
+      <UniqueIdentifier>{3132b670-896e-4583-b617-7af6662c337c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Core">
-      <UniqueIdentifier>{ad4b6f77-0154-40eb-ae3e-b3eb2af64fc0}</UniqueIdentifier>
+      <UniqueIdentifier>{6c753eee-1675-4c7a-bf6b-cb963f24ac3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{f7be56bf-20eb-46e1-87ff-59c91626ca05}</UniqueIdentifier>
     </Filter>
     <Filter Include="Memory">
-      <UniqueIdentifier>{9d4a29a7-fae0-4a5c-ab1f-a54e24f498d2}</UniqueIdentifier>
+      <UniqueIdentifier>{310be56b-4b70-4bb8-8cf8-286eeebd76e1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics">
-      <UniqueIdentifier>{ba89b8ad-6331-47a2-88bc-876374b9a119}</UniqueIdentifier>
+      <UniqueIdentifier>{b20cfd1d-a98b-45b1-83e5-4568b6d247bf}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics\D3D11">
-      <UniqueIdentifier>{20e483e2-cb9c-46ea-a58c-0b2b668f54b3}</UniqueIdentifier>
+      <UniqueIdentifier>{30b976c9-f7b0-497c-a524-5c1c0d995ce1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics\D3D11\Shaders">
-      <UniqueIdentifier>{e5c923b5-50cd-4872-9539-682d32f8c8ec}</UniqueIdentifier>
+      <UniqueIdentifier>{54c3a648-28d2-424a-84e4-62983b36f821}</UniqueIdentifier>
     </Filter>
     <Filter Include="Container">
-      <UniqueIdentifier>{c1f3e9c6-a73a-4cea-8bcf-3efd8030bec7}</UniqueIdentifier>
+      <UniqueIdentifier>{1bdb7bd5-9f9d-4dbe-a3e0-0501d61760ea}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

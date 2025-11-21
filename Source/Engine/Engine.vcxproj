@@ -170,6 +170,12 @@
     <ClInclude Include="Input\InputManager.h" />
     <ClInclude Include="Math\Vector3.h" />
     <ClInclude Include="Math\Vector4.h" />
+    <ClInclude Include="World\World.h" />
+    <ClInclude Include="World\WObject.h" />
+    <ClInclude Include="World\CComponent.h" />
+    <ClInclude Include="World\CTransform.h" />
+    <ClInclude Include="World\CRenderer.h" />
+    <ClInclude Include="World\CMeshRenderer.h" />
     <ClInclude Include="Core\ExcepAPI.h" />
     <ClInclude Include="Core\Types.h" />
     <ClInclude Include="Core\Pch.h" />
@@ -177,6 +183,12 @@
   <ItemGroup>
     <ClCompile Include="Graphics\D3D11\D3D11Renderer.cpp" />
     <ClCompile Include="Input\InputManager.cpp" />
+    <ClCompile Include="World\World.cpp" />
+    <ClCompile Include="World\WObject.cpp" />
+    <ClCompile Include="World\CComponent.cpp" />
+    <ClCompile Include="World\CTransform.cpp" />
+    <ClCompile Include="World\CRenderer.cpp" />
+    <ClCompile Include="World\CMeshRenderer.cpp" />
     <ClCompile Include="Core\DllMain.cpp" />
     <ClCompile Include="Core\Pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

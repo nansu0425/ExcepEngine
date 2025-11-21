@@ -3,6 +3,9 @@
 #include "Input/InputManager.h"
 #include "Math/Vector3.h"
 #include "Container/DynamicArray.h"
+#include "World/World.h"
+#include "World/WObject.h"
+#include "World/CMeshRenderer.h"
 #include "imgui/imgui.h"
 #include "imgui/backends/imgui_impl_win32.h"
 #include "imgui/backends/imgui_impl_dx11.h"
@@ -12,6 +15,7 @@ using namespace Excep::Input;
 using namespace Excep::Memory;
 using namespace Excep::Math;
 using namespace Excep::Container;
+using namespace Excep::World;
 
 #define MAX_LOADSTRING 100
 
@@ -24,7 +28,7 @@ UniquePtr<D3D11Renderer> g_renderer;
 UniquePtr<InputManager> g_inputManager;
 HWND g_hwnd = nullptr;
 bool8 g_isRunning = true;
-DynamicArray<SpawnedObject> g_spawnedObjects;
+UniquePtr<World> g_world;
 
 // 전방 선언
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -69,29 +73,39 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
                 // 방향키 입력 처리 (ImGui가 키보드를 캡처하지 않을 때만)
                 ImGuiIO& io = ImGui::GetIO();
-                if (!io.WantCaptureKeyboard && !g_spawnedObjects.IsEmpty())
+                if (!io.WantCaptureKeyboard && g_world)
                 {
-                    const float32 moveSpeed = 0.01f;
-                    Vector3& lastPos = g_spawnedObjects.GetBack().position;
-
-                    if (g_inputManager->IsKeyDown(VK_LEFT))
+                    WObject* lastObj = g_world->GetLastObject();
+                    if (lastObj)
                     {
-                        lastPos.x -= moveSpeed;
-                    }
+                        CMeshRenderer* meshRenderer = lastObj->GetComponent<CMeshRenderer>();
+                        if (meshRenderer)
+                        {
+                            const float32 moveSpeed = 0.01f;
+                            Vector3 pos = meshRenderer->GetPosition();
 
-                    if (g_inputManager->IsKeyDown(VK_RIGHT))
-                    {
-                        lastPos.x += moveSpeed;
-                    }
+                            if (g_inputManager->IsKeyDown(VK_LEFT))
+                            {
+                                pos.x -= moveSpeed;
+                            }
 
-                    if (g_inputManager->IsKeyDown(VK_UP))
-                    {
-                        lastPos.y += moveSpeed;
-                    }
+                            if (g_inputManager->IsKeyDown(VK_RIGHT))
+                            {
+                                pos.x += moveSpeed;
+                            }
 
-                    if (g_inputManager->IsKeyDown(VK_DOWN))
-                    {
-                        lastPos.y -= moveSpeed;
+                            if (g_inputManager->IsKeyDown(VK_UP))
+                            {
+                                pos.y += moveSpeed;
+                            }
+
+                            if (g_inputManager->IsKeyDown(VK_DOWN))
+                            {
+                                pos.y -= moveSpeed;
+                            }
+
+                            meshRenderer->SetPosition(pos);
+                        }
                     }
                 }
 
@@ -130,37 +144,51 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
                 if (ImGui::Button("Spawn"))
                 {
-                    SpawnedObject obj;
-                    obj.type = selectedType;
-                    obj.position = Vector3(spawnX, spawnY, 0.0f);
-                    g_spawnedObjects.Add(obj);
+                    WObject* obj = g_world->SpawnObject();
+                    CMeshRenderer* meshRenderer = obj->AddComponent<CMeshRenderer>();
+                    meshRenderer->SetMeshType(selectedType);
+                    meshRenderer->SetPosition(Vector3(spawnX, spawnY, 0.0f));
                 }
 
                 ImGui::SameLine();
                 if (ImGui::Button("Clear All"))
                 {
-                    g_spawnedObjects.Clear();
+                    g_world->Clear();
                 }
 
                 ImGui::Separator();
-                ImGui::Text("Total Objects: %llu", g_spawnedObjects.GetSize());
+                ImGui::Text("Total Objects: %llu", g_world->GetObjectCount());
 
-                if (!g_spawnedObjects.IsEmpty())
+                WObject* lastObj = g_world->GetLastObject();
+                if (lastObj)
                 {
-                    const SpawnedObject& last = g_spawnedObjects.GetBack();
-                    const char* typeName = "Unknown";
-                    if (last.type == MeshType::Triangle)
-                        typeName = "Triangle";
-                    else if (last.type == MeshType::Cube)
-                        typeName = "Cube";
-                    else if (last.type == MeshType::Sphere)
-                        typeName = "Sphere";
-                    ImGui::Text("Last Object: %s at (%.2f, %.2f)", typeName, last.position.x, last.position.y);
+                    CMeshRenderer* meshRenderer = lastObj->GetComponent<CMeshRenderer>();
+
+                    if (meshRenderer)
+                    {
+                        const char8* typeName = "Unknown";
+                        MeshType type = meshRenderer->GetMeshType();
+                        if (type == MeshType::Triangle)
+                        {
+                            typeName = "Triangle";
+                        }
+                        else if (type == MeshType::Cube)
+                        {
+                            typeName = "Cube";
+                        }
+                        else if (type == MeshType::Sphere)
+                        {
+                            typeName = "Sphere";
+                        }
+
+                        Vector3 pos = meshRenderer->GetPosition();
+                        ImGui::Text("Last Object: %s at (%.2f, %.2f)", typeName, pos.x, pos.y);
+                    }
                 }
                 ImGui::End();
 
                 // 1. Engine 렌더링 (Clear + Draw)
-                g_renderer->RenderObjects(g_spawnedObjects);
+                g_world->Render(g_renderer.Get());
 
                 // 2. ImGui 렌더링 (UI 오버레이)
                 ImGui::Render();
@@ -179,6 +207,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     ImGui_ImplDX11_Shutdown();
     ImGui_ImplWin32_Shutdown();
     ImGui::DestroyContext();
+    g_world.Reset();
     g_inputManager.Reset();
     g_renderer.Reset();
 
@@ -233,6 +262,9 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
     // InputManager 초기화
     g_inputManager = MakeUnique<InputManager>();
+
+    // World 초기화
+    g_world = MakeUnique<World>();
 
     // ImGui 초기화
     IMGUI_CHECKVERSION();
