@@ -36,6 +36,7 @@ private:
     bool CompileShaders();
     bool CreateInputLayout();
     bool CreateRasterizerState();
+    bool ReadShaderFile(const std::wstring& filename, std::string& outSource);
 
     #pragma warning(push)
     #pragma warning(disable: 4251)  // ComPtr는 dll-interface가 필요하지 않음

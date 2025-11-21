@@ -12,10 +12,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Math\Vector4.h">
+    <ClInclude Include="Math\Vector3.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="Math\Vector3.h">
+    <ClInclude Include="Math\Vector4.h">
       <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="Core\ExcepAPI.h">
@@ -32,17 +32,28 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Math">
-      <UniqueIdentifier>{10bba032-8e72-44bd-af36-6704fa92c6dc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core">
-      <UniqueIdentifier>{5f431c27-2282-4d28-ae6b-7ef4e4f1f31d}</UniqueIdentifier>
-    </Filter>
+    <None Include="Graphics\D3D11\Shaders\Default.ps.hlsl">
+      <Filter>Graphics\D3D11\Shaders</Filter>
+    </None>
+    <None Include="Graphics\D3D11\Shaders\Default.vs.hlsl">
+      <Filter>Graphics\D3D11\Shaders</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
     <Filter Include="Graphics">
-      <UniqueIdentifier>{cb1d9bce-5306-4e51-bb3a-794d83084a04}</UniqueIdentifier>
+      <UniqueIdentifier>{2a55f9be-479c-491e-92ee-bd6fb19536f5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics\D3D11">
-      <UniqueIdentifier>{1fd195b5-e3e4-4c41-9741-fdb0af9e15a1}</UniqueIdentifier>
+      <UniqueIdentifier>{7f33a670-edb3-4c76-9090-07a44eb2cc06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\D3D11\Shaders">
+      <UniqueIdentifier>{e5429f59-ddc0-427f-8278-2b1756303a06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{36764c8c-5685-47b4-a66d-ba7d63204dc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{67a67500-f8ab-47e8-bc47-34088f4621b7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

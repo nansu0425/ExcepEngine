@@ -1,47 +1,12 @@
 ﻿#include "Core/Pch.h"
 #include "Graphics/D3D11/D3D11Renderer.h"
 #include <d3dcompiler.h>
+#include <fstream>
+#include <sstream>
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "d3dcompiler.lib")
-
-// 간단한 Vertex Shader (HLSL)
-const char* vertexShaderSource = R"(
-struct VS_INPUT
-{
-    float3 pos : POSITION;
-    float4 color : COLOR;
-};
-
-struct VS_OUTPUT
-{
-    float4 pos : SV_POSITION;
-    float4 color : COLOR;
-};
-
-VS_OUTPUT main(VS_INPUT input)
-{
-    VS_OUTPUT output;
-    output.pos = float4(input.pos, 1.0f);
-    output.color = input.color;
-    return output;
-}
-)";
-
-// 간단한 Pixel Shader (HLSL)
-const char* pixelShaderSource = R"(
-struct PS_INPUT
-{
-    float4 pos : SV_POSITION;
-    float4 color : COLOR;
-};
-
-float4 main(PS_INPUT input) : SV_TARGET
-{
-    return input.color;
-}
-)";
 
 namespace Excep
 {
@@ -261,13 +226,27 @@ bool D3D11Renderer::CreateVertexBuffer()
 
 bool D3D11Renderer::CompileShaders()
 {
+    // Vertex Shader 파일 읽기
+    std::string vertexShaderSource;
+    if (!ReadShaderFile(L"Shaders/Default.vs.hlsl", vertexShaderSource))
+    {
+        return false;
+    }
+
+    // Pixel Shader 파일 읽기
+    std::string pixelShaderSource;
+    if (!ReadShaderFile(L"Shaders/Default.ps.hlsl", pixelShaderSource))
+    {
+        return false;
+    }
+
     ComPtr<ID3DBlob> vsBlob;
     ComPtr<ID3DBlob> errorBlob;
 
     // Vertex Shader 컴파일
     HRESULT hr = D3DCompile(
-        vertexShaderSource,
-        strlen(vertexShaderSource),
+        vertexShaderSource.c_str(),
+        vertexShaderSource.length(),
         nullptr,
         nullptr,
         nullptr,
@@ -299,8 +278,8 @@ bool D3D11Renderer::CompileShaders()
     // Pixel Shader 컴파일
     ComPtr<ID3DBlob> psBlob;
     hr = D3DCompile(
-        pixelShaderSource,
-        strlen(pixelShaderSource),
+        pixelShaderSource.c_str(),
+        pixelShaderSource.length(),
         nullptr,
         nullptr,
         nullptr,
@@ -369,6 +348,37 @@ bool D3D11Renderer::CreateRasterizerState()
 
     HRESULT hr = m_device->CreateRasterizerState(&rasterizerDesc, m_rasterizerState.GetAddressOf());
     return SUCCEEDED(hr);
+}
+
+bool D3D11Renderer::ReadShaderFile(const std::wstring& filename, std::string& outSource)
+{
+    // 실행 파일의 경로 얻기
+    wchar_t exePath[MAX_PATH];
+    GetModuleFileNameW(nullptr, exePath, MAX_PATH);
+
+    // 실행 파일이 있는 디렉토리 추출
+    std::wstring exeDir = exePath;
+    size_t lastSlash = exeDir.find_last_of(L"\\/");
+    if (lastSlash != std::wstring::npos)
+    {
+        exeDir = exeDir.substr(0, lastSlash);
+    }
+
+    // 절대 경로 생성
+    std::wstring fullPath = exeDir + L"\\" + filename;
+
+    std::ifstream file(fullPath, std::ios::in | std::ios::binary);
+    if (!file.is_open())
+    {
+        return false;
+    }
+
+    std::stringstream buffer;
+    buffer << file.rdbuf();
+    outSource = buffer.str();
+
+    file.close();
+    return true;
 }
 
 } // namespace Graphics
