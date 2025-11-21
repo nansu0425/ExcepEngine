@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <ClCompile Include="Input\InputManager.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
     <ClCompile Include="Core\DllMain.cpp">
       <Filter>Core</Filter>
     </ClCompile>
@@ -12,17 +15,8 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Memory\WeakPtr.h">
-      <Filter>Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="Memory\SharedPtr.h">
-      <Filter>Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="Memory\UniquePtr.h">
-      <Filter>Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="Memory\Memory.h">
-      <Filter>Memory</Filter>
+    <ClInclude Include="Input\InputManager.h">
+      <Filter>Input</Filter>
     </ClInclude>
     <ClInclude Include="Math\Vector3.h">
       <Filter>Math</Filter>
@@ -38,6 +32,18 @@
     </ClInclude>
     <ClInclude Include="Core\Pch.h">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\UniquePtr.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\SharedPtr.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\WeakPtr.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\Memory.h">
+      <Filter>Memory</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\D3D11\D3D11Renderer.h">
       <Filter>Graphics\D3D11</Filter>
@@ -76,26 +82,29 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Memory">
-      <UniqueIdentifier>{2aaa80da-0afb-4882-a9a3-aa5b99213cee}</UniqueIdentifier>
+    <Filter Include="Input">
+      <UniqueIdentifier>{654ad932-d31e-4aa5-a7d4-dff4e9a1e15f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Math">
-      <UniqueIdentifier>{1d2c7034-4468-4ce3-86c1-ccb6a374a9ad}</UniqueIdentifier>
+      <UniqueIdentifier>{bf4156c3-5e48-4559-9a7f-2bb0a99f70e8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Core">
-      <UniqueIdentifier>{0f2f7a64-a457-471c-979c-50c31aafed2f}</UniqueIdentifier>
+      <UniqueIdentifier>{ad4b6f77-0154-40eb-ae3e-b3eb2af64fc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory">
+      <UniqueIdentifier>{9d4a29a7-fae0-4a5c-ab1f-a54e24f498d2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics">
-      <UniqueIdentifier>{10a570c5-ea41-4cfd-a331-c42f06591845}</UniqueIdentifier>
+      <UniqueIdentifier>{ba89b8ad-6331-47a2-88bc-876374b9a119}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics\D3D11">
-      <UniqueIdentifier>{b41b2fec-2012-4868-964d-2173f5217ae9}</UniqueIdentifier>
+      <UniqueIdentifier>{20e483e2-cb9c-46ea-a58c-0b2b668f54b3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics\D3D11\Shaders">
-      <UniqueIdentifier>{a5c29ca7-71c0-4b7e-a069-c034012c6458}</UniqueIdentifier>
+      <UniqueIdentifier>{e5c923b5-50cd-4872-9539-682d32f8c8ec}</UniqueIdentifier>
     </Filter>
     <Filter Include="Container">
-      <UniqueIdentifier>{55e495fb-33b4-4e34-9410-0e38b02fd807}</UniqueIdentifier>
+      <UniqueIdentifier>{c1f3e9c6-a73a-4cea-8bcf-3efd8030bec7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

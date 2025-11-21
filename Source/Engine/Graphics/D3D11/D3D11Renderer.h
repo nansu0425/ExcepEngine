@@ -20,6 +20,11 @@ struct Vertex
     Vector4 color;
 };
 
+struct TransformData
+{
+    Vector4 offset;  // xyz = offset, w = padding
+};
+
 class EXCEP_API D3D11Renderer
 {
 public:
@@ -59,10 +64,16 @@ public:
     /// @return ID3D11RenderTargetView 포인터
     ID3D11RenderTargetView* GetRenderTargetView() const { return m_renderTargetView.Get(); }
 
+    /// @brief 삼각형의 위치 오프셋을 설정합니다
+    /// @param x X축 오프셋
+    /// @param y Y축 오프셋
+    void SetTriangleOffset(float32 x, float32 y);
+
 private:
     bool8 CreateDeviceAndSwapChain(HWND hwnd, int32 width, int32 height);
     bool8 CreateRenderTargetView();
     bool8 CreateVertexBuffer();
+    bool8 CreateConstantBuffer();
     bool8 CompileShaders();
     bool8 CreateInputLayout();
     bool8 CreateRasterizerState();
@@ -75,12 +86,14 @@ private:
     ComPtr<IDXGISwapChain> m_swapChain;
     ComPtr<ID3D11RenderTargetView> m_renderTargetView;
     ComPtr<ID3D11Buffer> m_vertexBuffer;
+    ComPtr<ID3D11Buffer> m_constantBuffer;
     ComPtr<ID3D11VertexShader> m_vertexShader;
     ComPtr<ID3D11PixelShader> m_pixelShader;
     ComPtr<ID3D11InputLayout> m_inputLayout;
     ComPtr<ID3D11RasterizerState> m_rasterizerState;
     #pragma warning(pop)
 
+    TransformData m_transformData;
     int32 m_width;
     int32 m_height;
 };

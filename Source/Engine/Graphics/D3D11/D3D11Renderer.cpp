@@ -16,6 +16,8 @@ namespace Graphics
 D3D11Renderer::D3D11Renderer()
     : m_width(0), m_height(0)
 {
+    // Transform 초기화
+    m_transformData.offset = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
 }
 
 D3D11Renderer::~D3D11Renderer()
@@ -53,6 +55,11 @@ bool8 D3D11Renderer::Initialize(HWND hwnd, int32 width, int32 height)
         return false;
     }
 
+    if (!CreateConstantBuffer())
+    {
+        return false;
+    }
+
     if (!CreateRasterizerState())
     {
         return false;
@@ -80,6 +87,7 @@ void D3D11Renderer::Shutdown()
     m_inputLayout.Reset();
     m_pixelShader.Reset();
     m_vertexShader.Reset();
+    m_constantBuffer.Reset();
     m_vertexBuffer.Reset();
     m_renderTargetView.Reset();
     m_swapChain.Reset();
@@ -104,6 +112,17 @@ void D3D11Renderer::Render()
     // 셰이더 설정
     m_deviceContext->VSSetShader(m_vertexShader.Get(), nullptr, 0);
     m_deviceContext->PSSetShader(m_pixelShader.Get(), nullptr, 0);
+
+    // Constant Buffer 업데이트
+    D3D11_MAPPED_SUBRESOURCE mappedResource;
+    if (SUCCEEDED(m_deviceContext->Map(m_constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource)))
+    {
+        memcpy(mappedResource.pData, &m_transformData, sizeof(TransformData));
+        m_deviceContext->Unmap(m_constantBuffer.Get(), 0);
+    }
+
+    // Constant Buffer를 Vertex Shader에 바인딩
+    m_deviceContext->VSSetConstantBuffers(0, 1, m_constantBuffer.GetAddressOf());
 
     // 입력 레이아웃 설정
     m_deviceContext->IASetInputLayout(m_inputLayout.Get());
@@ -227,6 +246,18 @@ bool8 D3D11Renderer::CreateVertexBuffer()
     initData.pSysMem = vertices;
 
     HRESULT hr = m_device->CreateBuffer(&bufferDesc, &initData, m_vertexBuffer.GetAddressOf());
+    return SUCCEEDED(hr);
+}
+
+bool8 D3D11Renderer::CreateConstantBuffer()
+{
+    D3D11_BUFFER_DESC bufferDesc = {};
+    bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+    bufferDesc.ByteWidth = sizeof(TransformData);
+    bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+    bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+    HRESULT hr = m_device->CreateBuffer(&bufferDesc, nullptr, m_constantBuffer.GetAddressOf());
     return SUCCEEDED(hr);
 }
 
@@ -385,6 +416,14 @@ bool8 D3D11Renderer::ReadShaderFile(const String16& filename, String8& outSource
 
     file.close();
     return true;
+}
+
+void D3D11Renderer::SetTriangleOffset(float32 x, float32 y)
+{
+    m_transformData.offset.x = x;
+    m_transformData.offset.y = y;
+    m_transformData.offset.z = 0.0f;
+    m_transformData.offset.w = 0.0f;
 }
 
 } // namespace Graphics

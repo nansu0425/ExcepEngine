@@ -1,10 +1,12 @@
 ﻿#include <windows.h>
 #include "Graphics/D3D11/D3D11Renderer.h"
+#include "Input/InputManager.h"
 #include "imgui/imgui.h"
 #include "imgui/backends/imgui_impl_win32.h"
 #include "imgui/backends/imgui_impl_dx11.h"
 
 using namespace Excep::Graphics;
+using namespace Excep::Input;
 using namespace Excep::Memory;
 
 #define MAX_LOADSTRING 100
@@ -15,8 +17,11 @@ WCHAR szTitle[MAX_LOADSTRING] = L"ExcepEngine Editor";
 WCHAR szWindowClass[MAX_LOADSTRING] = L"EditorWindowClass";
 
 UniquePtr<D3D11Renderer> g_renderer;
+UniquePtr<InputManager> g_inputManager;
 HWND g_hwnd = nullptr;
 bool8 g_isRunning = true;
+float32 g_triangleX = 0.0f;
+float32 g_triangleY = 0.0f;
 
 // 전방 선언
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -59,6 +64,32 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                 ImGui_ImplWin32_NewFrame();
                 ImGui::NewFrame();
 
+                // 방향키 입력 처리 (ImGui가 키보드를 캡처하지 않을 때만)
+                ImGuiIO& io = ImGui::GetIO();
+                if (!io.WantCaptureKeyboard)
+                {
+                    const float32 moveSpeed = 0.01f;
+                    if (g_inputManager->IsKeyDown(VK_LEFT))
+                    {
+                        g_triangleX -= moveSpeed;
+                    }
+                    if (g_inputManager->IsKeyDown(VK_RIGHT))
+                    {
+                        g_triangleX += moveSpeed;
+                    }
+                    if (g_inputManager->IsKeyDown(VK_UP))
+                    {
+                        g_triangleY += moveSpeed;
+                    }
+                    if (g_inputManager->IsKeyDown(VK_DOWN))
+                    {
+                        g_triangleY -= moveSpeed;
+                    }
+                }
+
+                // 삼각형 위치 설정
+                g_renderer->SetTriangleOffset(g_triangleX, g_triangleY);
+
                 // UI 코드
                 if (ImGui::BeginMainMenuBar())
                 {
@@ -86,6 +117,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
                 // 3. 화면에 표시
                 g_renderer->Present();
+
+                // 프레임 끝에 InputManager 업데이트 (다음 프레임 준비)
+                g_inputManager->Update();
             }
         }
     }
@@ -94,6 +128,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     ImGui_ImplDX11_Shutdown();
     ImGui_ImplWin32_Shutdown();
     ImGui::DestroyContext();
+    g_inputManager.Reset();
     g_renderer.Reset();
 
     return (int)msg.wParam;
@@ -145,6 +180,9 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
         return FALSE;
     }
 
+    // InputManager 초기화
+    g_inputManager = MakeUnique<InputManager>();
+
     // ImGui 초기화
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -171,6 +209,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
     switch (message)
     {
+    case WM_KEYDOWN:
+        if (g_inputManager)
+        {
+            g_inputManager->ProcessKeyboardMessage(static_cast<uint32>(wParam), true);
+        }
+        break;
+
+    case WM_KEYUP:
+        if (g_inputManager)
+        {
+            g_inputManager->ProcessKeyboardMessage(static_cast<uint32>(wParam), false);
+        }
+        break;
+
     case WM_SIZE:
     {
         if (wParam == SIZE_MINIMIZED)
