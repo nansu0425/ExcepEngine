@@ -12,10 +12,16 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Core\Types.h">
-      <Filter>Core</Filter>
+    <ClInclude Include="Math\Vector4.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Vector3.h">
+      <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="Core\ExcepAPI.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Types.h">
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="Core\Pch.h">
@@ -26,14 +32,17 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <Filter Include="Math">
+      <UniqueIdentifier>{10bba032-8e72-44bd-af36-6704fa92c6dc}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Core">
-      <UniqueIdentifier>{5f2b5dc1-f390-44a2-8f31-9071bd867577}</UniqueIdentifier>
+      <UniqueIdentifier>{5f431c27-2282-4d28-ae6b-7ef4e4f1f31d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics">
-      <UniqueIdentifier>{4911bbbe-01ef-437b-8b3f-8ad08c0318a8}</UniqueIdentifier>
+      <UniqueIdentifier>{cb1d9bce-5306-4e51-bb3a-794d83084a04}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics\D3D11">
-      <UniqueIdentifier>{7ee8b426-6b88-4202-bf1d-1f1fbd761557}</UniqueIdentifier>
+      <UniqueIdentifier>{1fd195b5-e3e4-4c41-9741-fdb0af9e15a1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

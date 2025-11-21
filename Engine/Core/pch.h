@@ -15,5 +15,8 @@
 
 // DirectX 헤더
 #include <d3d11.h>
-#include <DirectXMath.h>
 #include <wrl/client.h>
+
+// 엔진 수학 라이브러리
+#include "Math/Vector3.h"
+#include "Math/Vector4.h"

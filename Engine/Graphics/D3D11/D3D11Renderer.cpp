@@ -236,9 +236,9 @@ bool D3D11Renderer::CreateVertexBuffer()
     // 삼각형 정점 (CCW 순서)
     Vertex vertices[] =
     {
-        { DirectX::XMFLOAT3(0.0f, 0.5f, 0.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },   // 상단 (빨강)
-        { DirectX::XMFLOAT3(-0.5f, -0.5f, 0.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) }, // 좌측 (파랑)
-        { DirectX::XMFLOAT3(0.5f, -0.5f, 0.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) }   // 우측 (초록)
+        { Vector3(0.0f, 0.5f, 0.0f), Vector4(1.0f, 0.0f, 0.0f, 1.0f) },   // 상단 (빨강)
+        { Vector3(-0.5f, -0.5f, 0.0f), Vector4(0.0f, 0.0f, 1.0f, 1.0f) }, // 좌측 (파랑)
+        { Vector3(0.5f, -0.5f, 0.0f), Vector4(0.0f, 1.0f, 0.0f, 1.0f) }   // 우측 (초록)
     };
 
     D3D11_BUFFER_DESC bufferDesc = {};

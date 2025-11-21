@@ -1,15 +1,16 @@
 ﻿#pragma once
 #include "Core/ExcepAPI.h"
 #include <d3d11.h>
-#include <DirectXMath.h>
 #include <wrl/client.h>
 
 using Microsoft::WRL::ComPtr;
+using Excep::Math::Vector3;
+using Excep::Math::Vector4;
 
 struct Vertex
 {
-    DirectX::XMFLOAT3 position;
-    DirectX::XMFLOAT4 color;
+    Vector3 position;
+    Vector4 color;
 };
 
 class EXCEP_API D3D11Renderer
