@@ -59,22 +59,34 @@ bool D3D11Renderer::Initialize(HWND hwnd, int32 width, int32 height)
     m_height = height;
 
     if (!CreateDeviceAndSwapChain(hwnd, width, height))
+    {
         return false;
+    }
 
     if (!CreateRenderTargetView())
+    {
         return false;
+    }
 
     if (!CompileShaders())
+    {
         return false;
+    }
 
     if (!CreateInputLayout())
+    {
         return false;
+    }
 
     if (!CreateVertexBuffer())
+    {
         return false;
+    }
 
     if (!CreateRasterizerState())
+    {
         return false;
+    }
 
     // 뷰포트 설정
     D3D11_VIEWPORT viewport = {};
@@ -108,10 +120,12 @@ void D3D11Renderer::Shutdown()
 void D3D11Renderer::Render()
 {
     if (!m_deviceContext)
+    {
         return;
+    }
 
     // 백 버퍼 지우기
-    float clearColor[4] = { 0.1f, 0.1f, 0.3f, 1.0f };
+    float32 clearColor[4] = { 0.1f, 0.1f, 0.3f, 1.0f };
     m_deviceContext->ClearRenderTargetView(m_renderTargetView.Get(), clearColor);
 
     // 렌더 타겟 설정
@@ -125,8 +139,8 @@ void D3D11Renderer::Render()
     m_deviceContext->IASetInputLayout(m_inputLayout.Get());
 
     // 정점 버퍼 설정
-    UINT stride = sizeof(Vertex);
-    UINT offset = 0;
+    uint32 stride = sizeof(Vertex);
+    uint32 offset = 0;
     m_deviceContext->IASetVertexBuffers(0, 1, m_vertexBuffer.GetAddressOf(), &stride, &offset);
 
     // 프리미티브 토폴로지 설정
@@ -142,7 +156,9 @@ void D3D11Renderer::Render()
 void D3D11Renderer::OnResize(int32 width, int32 height)
 {
     if (!m_device)
+    {
         return;
+    }
 
     m_width = width;
     m_height = height;
@@ -207,7 +223,9 @@ bool D3D11Renderer::CreateRenderTargetView()
     ComPtr<ID3D11Texture2D> backBuffer;
     HRESULT hr = m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)backBuffer.GetAddressOf());
     if (FAILED(hr))
+    {
         return false;
+    }
 
     hr = m_device->CreateRenderTargetView(backBuffer.Get(), nullptr, m_renderTargetView.GetAddressOf());
     return SUCCEEDED(hr);
@@ -257,7 +275,9 @@ bool D3D11Renderer::CompileShaders()
     );
 
     if (FAILED(hr))
+    {
         return false;
+    }
 
     hr = m_device->CreateVertexShader(
         vsBlob->GetBufferPointer(),
@@ -267,7 +287,9 @@ bool D3D11Renderer::CompileShaders()
     );
 
     if (FAILED(hr))
+    {
         return false;
+    }
 
     // Pixel Shader 컴파일
     ComPtr<ID3DBlob> psBlob;
@@ -286,7 +308,9 @@ bool D3D11Renderer::CompileShaders()
     );
 
     if (FAILED(hr))
+    {
         return false;
+    }
 
     hr = m_device->CreatePixelShader(
         psBlob->GetBufferPointer(),
@@ -296,7 +320,9 @@ bool D3D11Renderer::CompileShaders()
     );
 
     if (FAILED(hr))
+    {
         return false;
+    }
 
     // 입력 레이아웃 생성
     D3D11_INPUT_ELEMENT_DESC layout[] =
