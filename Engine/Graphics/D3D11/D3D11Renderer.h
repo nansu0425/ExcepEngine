@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "Core/EngineAPI.h"
+#include "Core/ExcepAPI.h"
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <wrl/client.h>
@@ -12,7 +12,7 @@ struct Vertex
     DirectX::XMFLOAT4 color;
 };
 
-class ENGINE_API D3D11Renderer
+class EXCEP_API D3D11Renderer
 {
 public:
     D3D11Renderer();
