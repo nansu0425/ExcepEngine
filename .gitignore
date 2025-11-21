@@ -364,3 +364,6 @@ FodyWeavers.xsd
 
 # Claude Code settings
 .claude/
+
+# ImGui temporary files
+imgui.ini

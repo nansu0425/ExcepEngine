@@ -118,9 +118,14 @@ void D3D11Renderer::Render()
 
     // 삼각형 그리기
     m_deviceContext->Draw(3, 0);
+}
 
-    // 백 버퍼 표시
-    m_swapChain->Present(1, 0);
+void D3D11Renderer::Present()
+{
+    if (m_swapChain)
+    {
+        m_swapChain->Present(1, 0);
+    }
 }
 
 void D3D11Renderer::OnResize(int32 width, int32 height)

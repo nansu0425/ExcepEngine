@@ -1,5 +1,8 @@
 ﻿#include <windows.h>
 #include "Graphics/D3D11/D3D11Renderer.h"
+#include "imgui/imgui.h"
+#include "imgui/backends/imgui_impl_win32.h"
+#include "imgui/backends/imgui_impl_dx11.h"
 
 using namespace Excep::Graphics;
 using namespace Excep::Memory;
@@ -13,8 +16,10 @@ WCHAR szWindowClass[MAX_LOADSTRING] = L"EditorWindowClass";
 
 UniquePtr<D3D11Renderer> g_renderer;
 HWND g_hwnd = nullptr;
+bool8 g_isRunning = true;
 
 // 전방 선언
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
@@ -47,12 +52,49 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         else
         {
             // 프레임 렌더링
-            if (g_renderer)
+            if (g_renderer && g_isRunning)
             {
+                // ImGui 프레임 시작
+                ImGui_ImplDX11_NewFrame();
+                ImGui_ImplWin32_NewFrame();
+                ImGui::NewFrame();
+
+                // UI 코드
+                if (ImGui::BeginMainMenuBar())
+                {
+                    if (ImGui::BeginMenu("File"))
+                    {
+                        if (ImGui::MenuItem("Exit"))
+                        {
+                            PostQuitMessage(0);
+                        }
+                        ImGui::EndMenu();
+                    }
+                    ImGui::EndMainMenuBar();
+                }
+
+                // ImGui Demo Window (테스트용)
+                ImGui::ShowDemoWindow();
+
+                // 렌더링 순서:
+                // 1. Engine 렌더링 (Clear + Draw)
                 g_renderer->Render();
+
+                // 2. ImGui 렌더링 (UI 오버레이)
+                ImGui::Render();
+                ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+
+                // 3. 화면에 표시
+                g_renderer->Present();
             }
         }
     }
+
+    // 메인 루프 종료 후 정리
+    ImGui_ImplDX11_Shutdown();
+    ImGui_ImplWin32_Shutdown();
+    ImGui::DestroyContext();
+    g_renderer.Reset();
 
     return (int)msg.wParam;
 }
@@ -103,6 +145,17 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
         return FALSE;
     }
 
+    // ImGui 초기화
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    // io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;  // Multi-Viewport는 나중에 추가
+    ImGui::StyleColorsDark();
+    ImGui_ImplWin32_Init(g_hwnd);
+    ImGui_ImplDX11_Init(g_renderer->GetDevice(), g_renderer->GetDeviceContext());
+
     ShowWindow(g_hwnd, nCmdShow);
     UpdateWindow(g_hwnd);
 
@@ -111,10 +164,18 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    if (ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam))
+    {
+        return true;
+    }
+
     switch (message)
     {
     case WM_SIZE:
     {
+        if (wParam == SIZE_MINIMIZED)
+            break;
+
         if (g_renderer)
         {
             int32 width = LOWORD(lParam);
@@ -125,7 +186,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     break;
 
     case WM_DESTROY:
-        g_renderer.Reset();
+        g_isRunning = false;
         PostQuitMessage(0);
         break;
 
