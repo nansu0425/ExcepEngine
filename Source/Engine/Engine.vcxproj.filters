@@ -32,28 +32,28 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Graphics\D3D11\Shaders\Default.ps.hlsl">
+    <None Include="Graphics\D3D11\Shaders\Default.vs.hlsl">
       <Filter>Graphics\D3D11\Shaders</Filter>
     </None>
-    <None Include="Graphics\D3D11\Shaders\Default.vs.hlsl">
+    <None Include="Graphics\D3D11\Shaders\Default.ps.hlsl">
       <Filter>Graphics\D3D11\Shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Graphics">
-      <UniqueIdentifier>{2a55f9be-479c-491e-92ee-bd6fb19536f5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Graphics\D3D11">
-      <UniqueIdentifier>{7f33a670-edb3-4c76-9090-07a44eb2cc06}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Graphics\D3D11\Shaders">
-      <UniqueIdentifier>{e5429f59-ddc0-427f-8278-2b1756303a06}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Math">
-      <UniqueIdentifier>{36764c8c-5685-47b4-a66d-ba7d63204dc3}</UniqueIdentifier>
+      <UniqueIdentifier>{874a1815-a023-4bc4-a65a-962f47492445}</UniqueIdentifier>
     </Filter>
     <Filter Include="Core">
-      <UniqueIdentifier>{67a67500-f8ab-47e8-bc47-34088f4621b7}</UniqueIdentifier>
+      <UniqueIdentifier>{754ed81f-6c83-42f7-b019-78c094a1078e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics">
+      <UniqueIdentifier>{2e933795-56ca-47d8-9f43-1f73376afafe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\D3D11">
+      <UniqueIdentifier>{08c3b6b1-2be3-4bf4-a441-068659a0e151}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\D3D11\Shaders">
+      <UniqueIdentifier>{760a1b45-3f80-4507-81e0-f321d793d71b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
