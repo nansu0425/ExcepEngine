@@ -13,6 +13,7 @@
 #include "Container/TreeMap.h"
 #include "Container/HashMap.h"
 #include "Container/TreeSet.h"
+#include "Container/HashSet.h"
 
 // C++ 표준 라이브러리
 #include <memory>
