@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+// 엔진 기본 타입
+#include "Core/Types.h"
+
 // Windows 헤더
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>

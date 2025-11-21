@@ -53,7 +53,7 @@ D3D11Renderer::~D3D11Renderer()
     Shutdown();
 }
 
-bool D3D11Renderer::Initialize(HWND hwnd, int width, int height)
+bool D3D11Renderer::Initialize(HWND hwnd, int32 width, int32 height)
 {
     m_width = width;
     m_height = height;
@@ -132,7 +132,7 @@ void D3D11Renderer::Render()
     m_swapChain->Present(1, 0);
 }
 
-void D3D11Renderer::OnResize(int width, int height)
+void D3D11Renderer::OnResize(int32 width, int32 height)
 {
     if (!m_device)
         return;
@@ -156,7 +156,7 @@ void D3D11Renderer::OnResize(int width, int height)
     m_deviceContext->RSSetViewports(1, &viewport);
 }
 
-bool D3D11Renderer::CreateDeviceAndSwapChain(HWND hwnd, int width, int height)
+bool D3D11Renderer::CreateDeviceAndSwapChain(HWND hwnd, int32 width, int32 height)
 {
     DXGI_SWAP_CHAIN_DESC swapChainDesc = {};
     swapChainDesc.BufferCount = 1;

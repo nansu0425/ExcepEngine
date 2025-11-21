@@ -76,8 +76,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
     hInst = hInstance;
 
-    int width = 800;
-    int height = 600;
+    int32 width = 800;
+    int32 height = 600;
 
     RECT rc = { 0, 0, width, height };
     AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
@@ -113,8 +113,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     {
         if (g_renderer)
         {
-            int width = LOWORD(lParam);
-            int height = HIWORD(lParam);
+            int32 width = LOWORD(lParam);
+            int32 height = HIWORD(lParam);
             g_renderer->OnResize(width, height);
         }
     }

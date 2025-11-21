@@ -18,13 +18,13 @@ public:
     D3D11Renderer();
     ~D3D11Renderer();
 
-    bool Initialize(HWND hwnd, int width, int height);
+    bool Initialize(HWND hwnd, int32 width, int32 height);
     void Shutdown();
     void Render();
-    void OnResize(int width, int height);
+    void OnResize(int32 width, int32 height);
 
 private:
-    bool CreateDeviceAndSwapChain(HWND hwnd, int width, int height);
+    bool CreateDeviceAndSwapChain(HWND hwnd, int32 width, int32 height);
     bool CreateRenderTargetView();
     bool CreateVertexBuffer();
     bool CompileShaders();
@@ -42,6 +42,6 @@ private:
     ComPtr<ID3D11InputLayout> m_inputLayout;
     #pragma warning(pop)
 
-    int m_width;
-    int m_height;
+    int32 m_width;
+    int32 m_height;
 };

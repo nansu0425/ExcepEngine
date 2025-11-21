@@ -12,6 +12,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Core\Types.h">
+      <Filter>Core</Filter>
+    </ClInclude>
     <ClInclude Include="Core\ExcepAPI.h">
       <Filter>Core</Filter>
     </ClInclude>
@@ -24,13 +27,13 @@
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
-      <UniqueIdentifier>{ec2266fc-47dd-4752-821f-8abfbd78bb9e}</UniqueIdentifier>
+      <UniqueIdentifier>{5f2b5dc1-f390-44a2-8f31-9071bd867577}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics">
-      <UniqueIdentifier>{e91c47bb-075f-4ecb-9287-1a097cf07d88}</UniqueIdentifier>
+      <UniqueIdentifier>{4911bbbe-01ef-437b-8b3f-8ad08c0318a8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics\D3D11">
-      <UniqueIdentifier>{569c9bd8-e60f-4915-bcd4-0a874467e8d0}</UniqueIdentifier>
+      <UniqueIdentifier>{7ee8b426-6b88-4202-bf1d-1f1fbd761557}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
