@@ -1,8 +1,8 @@
 ﻿#include <windows.h>
-#include <memory>
 #include "Graphics/D3D11/D3D11Renderer.h"
 
-using Excep::Graphics::D3D11Renderer;
+using namespace Excep::Graphics;
+using namespace Excep::Memory;
 
 #define MAX_LOADSTRING 100
 
@@ -11,7 +11,7 @@ HINSTANCE hInst;
 WCHAR szTitle[MAX_LOADSTRING] = L"ExcepEngine Editor";
 WCHAR szWindowClass[MAX_LOADSTRING] = L"EditorWindowClass";
 
-std::unique_ptr<D3D11Renderer> g_renderer;
+UniquePtr<D3D11Renderer> g_renderer;
 HWND g_hwnd = nullptr;
 
 // 전방 선언
@@ -76,6 +76,8 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
+    using Excep::Memory::MakeUnique;
+
     hInst = hInstance;
 
     int32 width = 800;
@@ -94,7 +96,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
     }
 
     // 렌더러 초기화
-    g_renderer = std::make_unique<D3D11Renderer>();
+    g_renderer = MakeUnique<D3D11Renderer>();
     if (!g_renderer->Initialize(g_hwnd, width, height))
     {
         MessageBox(g_hwnd, L"DirectX 11 렌더러 초기화 실패!", L"오류", MB_OK | MB_ICONERROR);
@@ -123,7 +125,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     break;
 
     case WM_DESTROY:
-        g_renderer.reset();
+        g_renderer.Reset();
         PostQuitMessage(0);
         break;
 

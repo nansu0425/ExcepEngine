@@ -17,9 +17,10 @@
 #include "Container/String8.h"
 #include "Container/String16.h"
 
+// 엔진 메모리 관리
+#include "Memory/Memory.h"
+
 // C++ 표준 라이브러리
-#include <memory>
-#include <string>
 #include <algorithm>
 
 #ifdef EXCEP_EXPORTS

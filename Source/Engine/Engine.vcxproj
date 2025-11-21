@@ -162,6 +162,10 @@
     <ClInclude Include="Container\HashSet.h" />
     <ClInclude Include="Container\String8.h" />
     <ClInclude Include="Container\String16.h" />
+    <ClInclude Include="Memory\UniquePtr.h" />
+    <ClInclude Include="Memory\SharedPtr.h" />
+    <ClInclude Include="Memory\WeakPtr.h" />
+    <ClInclude Include="Memory\Memory.h" />
     <ClInclude Include="Graphics\D3D11\D3D11Renderer.h" />
     <ClInclude Include="Math\Vector3.h" />
     <ClInclude Include="Math\Vector4.h" />

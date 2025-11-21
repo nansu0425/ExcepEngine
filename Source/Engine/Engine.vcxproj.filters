@@ -12,11 +12,17 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Container\String16.h">
-      <Filter>Container</Filter>
+    <ClInclude Include="Memory\WeakPtr.h">
+      <Filter>Memory</Filter>
     </ClInclude>
-    <ClInclude Include="Container\String8.h">
-      <Filter>Container</Filter>
+    <ClInclude Include="Memory\SharedPtr.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\UniquePtr.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\Memory.h">
+      <Filter>Memory</Filter>
     </ClInclude>
     <ClInclude Include="Math\Vector3.h">
       <Filter>Math</Filter>
@@ -54,6 +60,12 @@
     <ClInclude Include="Container\HashSet.h">
       <Filter>Container</Filter>
     </ClInclude>
+    <ClInclude Include="Container\String8.h">
+      <Filter>Container</Filter>
+    </ClInclude>
+    <ClInclude Include="Container\String16.h">
+      <Filter>Container</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Graphics\D3D11\Shaders\Default.vs.hlsl">
@@ -64,23 +76,26 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Container">
-      <UniqueIdentifier>{12033314-55f3-41bd-b8b6-32f5c040fe6a}</UniqueIdentifier>
+    <Filter Include="Memory">
+      <UniqueIdentifier>{2aaa80da-0afb-4882-a9a3-aa5b99213cee}</UniqueIdentifier>
     </Filter>
     <Filter Include="Math">
-      <UniqueIdentifier>{0c69e644-c44d-4919-89ba-0b440ec15471}</UniqueIdentifier>
+      <UniqueIdentifier>{1d2c7034-4468-4ce3-86c1-ccb6a374a9ad}</UniqueIdentifier>
     </Filter>
     <Filter Include="Core">
-      <UniqueIdentifier>{fb221d39-553b-4554-9430-2247daddd345}</UniqueIdentifier>
+      <UniqueIdentifier>{0f2f7a64-a457-471c-979c-50c31aafed2f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics">
-      <UniqueIdentifier>{f15a930c-8eb4-41e8-9bcf-6626213a7a77}</UniqueIdentifier>
+      <UniqueIdentifier>{10a570c5-ea41-4cfd-a331-c42f06591845}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics\D3D11">
-      <UniqueIdentifier>{6f4fae0d-bb79-4242-bb0c-13d27f9dbbe4}</UniqueIdentifier>
+      <UniqueIdentifier>{b41b2fec-2012-4868-964d-2173f5217ae9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics\D3D11\Shaders">
-      <UniqueIdentifier>{f53900b1-2737-4a34-b4dc-f0e5b67a9ad9}</UniqueIdentifier>
+      <UniqueIdentifier>{a5c29ca7-71c0-4b7e-a069-c034012c6458}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Container">
+      <UniqueIdentifier>{55e495fb-33b4-4e34-9410-0e38b02fd807}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
