@@ -426,5 +426,54 @@ void D3D11Renderer::SetTriangleOffset(float32 x, float32 y)
     m_transformData.offset.w = 0.0f;
 }
 
+void D3D11Renderer::RenderTriangles(const Container::DynamicArray<Math::Vector3>& positions)
+{
+    if (!m_deviceContext || positions.IsEmpty())
+    {
+        // 배열이 비어있어도 화면은 클리어
+        if (m_deviceContext)
+        {
+            float32 clearColor[4] = { 0.1f, 0.1f, 0.3f, 1.0f };
+            m_deviceContext->ClearRenderTargetView(m_renderTargetView.Get(), clearColor);
+            m_deviceContext->OMSetRenderTargets(1, m_renderTargetView.GetAddressOf(), nullptr);
+        }
+
+        return;
+    }
+
+    // 1. 화면 클리어 (한 번만)
+    float32 clearColor[4] = { 0.1f, 0.1f, 0.3f, 1.0f };
+    m_deviceContext->ClearRenderTargetView(m_renderTargetView.Get(), clearColor);
+    m_deviceContext->OMSetRenderTargets(1, m_renderTargetView.GetAddressOf(), nullptr);
+
+    // 2. 파이프라인 설정 (한 번만)
+    m_deviceContext->VSSetShader(m_vertexShader.Get(), nullptr, 0);
+    m_deviceContext->PSSetShader(m_pixelShader.Get(), nullptr, 0);
+    m_deviceContext->IASetInputLayout(m_inputLayout.Get());
+
+    uint32 stride = sizeof(Vertex);
+    uint32 offset = 0;
+    m_deviceContext->IASetVertexBuffers(0, 1, m_vertexBuffer.GetAddressOf(), &stride, &offset);
+    m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+    // 3. 각 삼각형 렌더링
+    for (uint64 i = 0; i < positions.GetSize(); ++i)
+    {
+        // Constant Buffer 업데이트
+        TransformData transformData;
+        transformData.offset = Vector4(positions[i].x, positions[i].y, positions[i].z, 0.0f);
+
+        D3D11_MAPPED_SUBRESOURCE mappedResource;
+        if (SUCCEEDED(m_deviceContext->Map(m_constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource)))
+        {
+            memcpy(mappedResource.pData, &transformData, sizeof(TransformData));
+            m_deviceContext->Unmap(m_constantBuffer.Get(), 0);
+        }
+
+        m_deviceContext->VSSetConstantBuffers(0, 1, m_constantBuffer.GetAddressOf());
+        m_deviceContext->Draw(3, 0);
+    }
+}
+
 } // namespace Graphics
 } // namespace Excep

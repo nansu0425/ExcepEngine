@@ -1,6 +1,8 @@
 ﻿#include <windows.h>
 #include "Graphics/D3D11/D3D11Renderer.h"
 #include "Input/InputManager.h"
+#include "Math/Vector3.h"
+#include "Container/DynamicArray.h"
 #include "imgui/imgui.h"
 #include "imgui/backends/imgui_impl_win32.h"
 #include "imgui/backends/imgui_impl_dx11.h"
@@ -8,6 +10,8 @@
 using namespace Excep::Graphics;
 using namespace Excep::Input;
 using namespace Excep::Memory;
+using namespace Excep::Math;
+using namespace Excep::Container;
 
 #define MAX_LOADSTRING 100
 
@@ -20,8 +24,7 @@ UniquePtr<D3D11Renderer> g_renderer;
 UniquePtr<InputManager> g_inputManager;
 HWND g_hwnd = nullptr;
 bool8 g_isRunning = true;
-float32 g_triangleX = 0.0f;
-float32 g_triangleY = 0.0f;
+DynamicArray<Vector3> g_trianglePositions;
 
 // 전방 선언
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -66,29 +69,31 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
                 // 방향키 입력 처리 (ImGui가 키보드를 캡처하지 않을 때만)
                 ImGuiIO& io = ImGui::GetIO();
-                if (!io.WantCaptureKeyboard)
+                if (!io.WantCaptureKeyboard && !g_trianglePositions.IsEmpty())
                 {
                     const float32 moveSpeed = 0.01f;
+                    Vector3& lastTriangle = g_trianglePositions.GetBack();
+
                     if (g_inputManager->IsKeyDown(VK_LEFT))
                     {
-                        g_triangleX -= moveSpeed;
+                        lastTriangle.x -= moveSpeed;
                     }
+
                     if (g_inputManager->IsKeyDown(VK_RIGHT))
                     {
-                        g_triangleX += moveSpeed;
+                        lastTriangle.x += moveSpeed;
                     }
+
                     if (g_inputManager->IsKeyDown(VK_UP))
                     {
-                        g_triangleY += moveSpeed;
+                        lastTriangle.y += moveSpeed;
                     }
+
                     if (g_inputManager->IsKeyDown(VK_DOWN))
                     {
-                        g_triangleY -= moveSpeed;
+                        lastTriangle.y -= moveSpeed;
                     }
                 }
-
-                // 삼각형 위치 설정
-                g_renderer->SetTriangleOffset(g_triangleX, g_triangleY);
 
                 // UI 코드
                 if (ImGui::BeginMainMenuBar())
@@ -104,12 +109,37 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                     ImGui::EndMainMenuBar();
                 }
 
-                // ImGui Demo Window (테스트용)
-                ImGui::ShowDemoWindow();
+                // Triangle Spawner UI
+                static float32 spawnX = 0.0f;
+                static float32 spawnY = 0.0f;
 
-                // 렌더링 순서:
+                ImGui::Begin("Triangle Spawner");
+                ImGui::DragFloat("Spawn X", &spawnX, 0.01f, -1.0f, 1.0f);
+                ImGui::DragFloat("Spawn Y", &spawnY, 0.01f, -1.0f, 1.0f);
+
+                if (ImGui::Button("Spawn Triangle"))
+                {
+                    g_trianglePositions.Add(Vector3(spawnX, spawnY, 0.0f));
+                }
+
+                ImGui::SameLine();
+                if (ImGui::Button("Clear All"))
+                {
+                    g_trianglePositions.Clear();
+                }
+
+                ImGui::Separator();
+                ImGui::Text("Total Triangles: %llu", g_trianglePositions.GetSize());
+
+                if (!g_trianglePositions.IsEmpty())
+                {
+                    const Vector3& last = g_trianglePositions.GetBack();
+                    ImGui::Text("Last Triangle: (%.2f, %.2f)", last.x, last.y);
+                }
+                ImGui::End();
+
                 // 1. Engine 렌더링 (Clear + Draw)
-                g_renderer->Render();
+                g_renderer->RenderTriangles(g_trianglePositions);
 
                 // 2. ImGui 렌더링 (UI 오버레이)
                 ImGui::Render();

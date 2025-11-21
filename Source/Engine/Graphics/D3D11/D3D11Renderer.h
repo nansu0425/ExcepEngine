@@ -9,6 +9,15 @@ using Excep::Math::Vector4;
 using Excep::Container::String8;
 using Excep::Container::String16;
 
+// Forward declarations
+namespace Excep
+{
+namespace Container
+{
+    template<typename T> class DynamicArray;
+}
+}
+
 namespace Excep
 {
 namespace Graphics
@@ -68,6 +77,10 @@ public:
     /// @param x X축 오프셋
     /// @param y Y축 오프셋
     void SetTriangleOffset(float32 x, float32 y);
+
+    /// @brief 여러 삼각형을 렌더링합니다
+    /// @param positions 삼각형들의 위치 배열
+    void RenderTriangles(const Container::DynamicArray<Math::Vector3>& positions);
 
 private:
     bool8 CreateDeviceAndSwapChain(HWND hwnd, int32 width, int32 height);
