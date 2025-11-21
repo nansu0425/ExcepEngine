@@ -11,6 +11,7 @@
 #include "Container/DynamicArray.h"
 #include "Container/StaticArray.h"
 #include "Container/TreeMap.h"
+#include "Container/HashMap.h"
 
 // C++ 표준 라이브러리
 #include <memory>
