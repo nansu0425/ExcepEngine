@@ -152,7 +152,7 @@ void D3D11Renderer::OnResize(int32 width, int32 height)
 bool D3D11Renderer::CreateDeviceAndSwapChain(HWND hwnd, int32 width, int32 height)
 {
     DXGI_SWAP_CHAIN_DESC swapChainDesc = {};
-    swapChainDesc.BufferCount = 1;
+    swapChainDesc.BufferCount = 2;
     swapChainDesc.BufferDesc.Width = width;
     swapChainDesc.BufferDesc.Height = height;
     swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -163,6 +163,7 @@ bool D3D11Renderer::CreateDeviceAndSwapChain(HWND hwnd, int32 width, int32 heigh
     swapChainDesc.SampleDesc.Count = 1;
     swapChainDesc.SampleDesc.Quality = 0;
     swapChainDesc.Windowed = TRUE;
+    swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
 
     D3D_FEATURE_LEVEL featureLevel;
     UINT flags = 0;
