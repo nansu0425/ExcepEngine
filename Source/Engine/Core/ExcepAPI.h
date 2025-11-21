@@ -7,10 +7,12 @@
 #include "Math/Vector3.h"
 #include "Math/Vector4.h"
 
+// 엔진 컨테이너
+#include "Container/DynamicArray.h"
+
 // C++ 표준 라이브러리
 #include <memory>
 #include <string>
-#include <vector>
 #include <algorithm>
 
 #ifdef EXCEP_EXPORTS
