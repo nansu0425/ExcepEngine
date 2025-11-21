@@ -29,6 +29,7 @@ private:
     bool CreateVertexBuffer();
     bool CompileShaders();
     bool CreateInputLayout();
+    bool CreateRasterizerState();
 
     #pragma warning(push)
     #pragma warning(disable: 4251)  // ComPtr는 dll-interface가 필요하지 않음
@@ -40,6 +41,7 @@ private:
     ComPtr<ID3D11VertexShader> m_vertexShader;
     ComPtr<ID3D11PixelShader> m_pixelShader;
     ComPtr<ID3D11InputLayout> m_inputLayout;
+    ComPtr<ID3D11RasterizerState> m_rasterizerState;
     #pragma warning(pop)
 
     int32 m_width;

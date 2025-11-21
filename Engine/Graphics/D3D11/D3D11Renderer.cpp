@@ -73,6 +73,9 @@ bool D3D11Renderer::Initialize(HWND hwnd, int32 width, int32 height)
     if (!CreateVertexBuffer())
         return false;
 
+    if (!CreateRasterizerState())
+        return false;
+
     // 뷰포트 설정
     D3D11_VIEWPORT viewport = {};
     viewport.TopLeftX = 0;
@@ -83,11 +86,15 @@ bool D3D11Renderer::Initialize(HWND hwnd, int32 width, int32 height)
     viewport.MaxDepth = 1.0f;
     m_deviceContext->RSSetViewports(1, &viewport);
 
+    // Rasterizer State 설정
+    m_deviceContext->RSSetState(m_rasterizerState.Get());
+
     return true;
 }
 
 void D3D11Renderer::Shutdown()
 {
+    m_rasterizerState.Reset();
     m_inputLayout.Reset();
     m_pixelShader.Reset();
     m_vertexShader.Reset();
@@ -208,12 +215,12 @@ bool D3D11Renderer::CreateRenderTargetView()
 
 bool D3D11Renderer::CreateVertexBuffer()
 {
-    // 삼각형 정점
+    // 삼각형 정점 (CCW 순서)
     Vertex vertices[] =
     {
         { DirectX::XMFLOAT3(0.0f, 0.5f, 0.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },   // 상단 (빨강)
-        { DirectX::XMFLOAT3(0.5f, -0.5f, 0.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },  // 우측 (초록)
-        { DirectX::XMFLOAT3(-0.5f, -0.5f, 0.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) }  // 좌측 (파랑)
+        { DirectX::XMFLOAT3(-0.5f, -0.5f, 0.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) }, // 좌측 (파랑)
+        { DirectX::XMFLOAT3(0.5f, -0.5f, 0.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) }   // 우측 (초록)
     };
 
     D3D11_BUFFER_DESC bufferDesc = {};
@@ -313,4 +320,22 @@ bool D3D11Renderer::CreateInputLayout()
 {
     // 입력 레이아웃은 CompileShaders에서 생성됨
     return true;
+}
+
+bool D3D11Renderer::CreateRasterizerState()
+{
+    D3D11_RASTERIZER_DESC rasterizerDesc = {};
+    rasterizerDesc.FillMode = D3D11_FILL_SOLID;
+    rasterizerDesc.CullMode = D3D11_CULL_BACK;
+    rasterizerDesc.FrontCounterClockwise = TRUE;  // CCW를 front face로 설정
+    rasterizerDesc.DepthBias = 0;
+    rasterizerDesc.DepthBiasClamp = 0.0f;
+    rasterizerDesc.SlopeScaledDepthBias = 0.0f;
+    rasterizerDesc.DepthClipEnable = TRUE;
+    rasterizerDesc.ScissorEnable = FALSE;
+    rasterizerDesc.MultisampleEnable = FALSE;
+    rasterizerDesc.AntialiasedLineEnable = FALSE;
+
+    HRESULT hr = m_device->CreateRasterizerState(&rasterizerDesc, m_rasterizerState.GetAddressOf());
+    return SUCCEEDED(hr);
 }
