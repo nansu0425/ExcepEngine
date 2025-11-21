@@ -24,9 +24,22 @@ public:
     D3D11Renderer();
     ~D3D11Renderer();
 
+    /// @brief 렌더러를 초기화합니다
+    /// @param hwnd 렌더링 대상 윈도우 핸들
+    /// @param width 렌더링 해상도 너비
+    /// @param height 렌더링 해상도 높이
+    /// @return 초기화 성공 시 true, 실패 시 false
     bool8 Initialize(HWND hwnd, int32 width, int32 height);
+
+    /// @brief 렌더러를 종료하고 모든 리소스를 해제합니다
     void Shutdown();
+
+    /// @brief 한 프레임을 렌더링합니다
     void Render();
+
+    /// @brief 윈도우 크기 변경 시 렌더링 리소스를 재구성합니다
+    /// @param width 새로운 너비
+    /// @param height 새로운 높이
     void OnResize(int32 width, int32 height);
 
 private:
