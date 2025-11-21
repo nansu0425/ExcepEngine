@@ -228,15 +228,15 @@ bool8 D3D11Renderer::CreateVertexBuffer()
 bool8 D3D11Renderer::CompileShaders()
 {
     // Vertex Shader 파일 읽기
-    std::string vertexShaderSource;
-    if (!ReadShaderFile(L"Shaders/Default.vs.hlsl", vertexShaderSource))
+    String8 vertexShaderSource;
+    if (!ReadShaderFile(String16(L"Shaders/Default.vs.hlsl"), vertexShaderSource))
     {
         return false;
     }
 
     // Pixel Shader 파일 읽기
-    std::string pixelShaderSource;
-    if (!ReadShaderFile(L"Shaders/Default.ps.hlsl", pixelShaderSource))
+    String8 pixelShaderSource;
+    if (!ReadShaderFile(String16(L"Shaders/Default.ps.hlsl"), pixelShaderSource))
     {
         return false;
     }
@@ -246,8 +246,8 @@ bool8 D3D11Renderer::CompileShaders()
 
     // Vertex Shader 컴파일
     HRESULT hr = D3DCompile(
-        vertexShaderSource.c_str(),
-        vertexShaderSource.length(),
+        vertexShaderSource.GetCString(),
+        vertexShaderSource.GetLength(),
         nullptr,
         nullptr,
         nullptr,
@@ -279,8 +279,8 @@ bool8 D3D11Renderer::CompileShaders()
     // Pixel Shader 컴파일
     ComPtr<ID3DBlob> psBlob;
     hr = D3DCompile(
-        pixelShaderSource.c_str(),
-        pixelShaderSource.length(),
+        pixelShaderSource.GetCString(),
+        pixelShaderSource.GetLength(),
         nullptr,
         nullptr,
         nullptr,
@@ -351,24 +351,24 @@ bool8 D3D11Renderer::CreateRasterizerState()
     return SUCCEEDED(hr);
 }
 
-bool8 D3D11Renderer::ReadShaderFile(const std::wstring& filename, std::string& outSource)
+bool8 D3D11Renderer::ReadShaderFile(const String16& filename, String8& outSource)
 {
     // 실행 파일의 경로 얻기
     char16 exePath[MAX_PATH];
     GetModuleFileNameW(nullptr, exePath, MAX_PATH);
 
     // 실행 파일이 있는 디렉토리 추출
-    std::wstring exeDir = exePath;
-    uint64 lastSlash = exeDir.find_last_of(L"\\/");
-    if (lastSlash != std::wstring::npos)
+    String16 exeDir = exePath;
+    uint64 lastSlash = exeDir.FindLastOf(String16(L"\\/"));
+    if (lastSlash != UINT64_MAX)
     {
-        exeDir = exeDir.substr(0, lastSlash);
+        exeDir = exeDir.Substring(0, lastSlash);
     }
 
     // 절대 경로 생성
-    std::wstring fullPath = exeDir + L"\\" + filename;
+    String16 fullPath = exeDir + String16(L"\\") + filename;
 
-    std::ifstream file(fullPath, std::ios::in | std::ios::binary);
+    std::ifstream file(fullPath.GetCString(), std::ios::in | std::ios::binary);
     if (!file.is_open())
     {
         return false;
@@ -376,7 +376,7 @@ bool8 D3D11Renderer::ReadShaderFile(const std::wstring& filename, std::string& o
 
     std::stringstream buffer;
     buffer << file.rdbuf();
-    outSource = buffer.str();
+    outSource = String8(buffer.str());
 
     file.close();
     return true;

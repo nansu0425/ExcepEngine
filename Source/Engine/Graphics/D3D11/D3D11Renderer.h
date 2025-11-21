@@ -6,6 +6,8 @@
 using Microsoft::WRL::ComPtr;
 using Excep::Math::Vector3;
 using Excep::Math::Vector4;
+using Excep::Container::String8;
+using Excep::Container::String16;
 
 namespace Excep
 {
@@ -49,7 +51,7 @@ private:
     bool8 CompileShaders();
     bool8 CreateInputLayout();
     bool8 CreateRasterizerState();
-    bool8 ReadShaderFile(const std::wstring& filename, std::string& outSource);
+    bool8 ReadShaderFile(const String16& filename, String8& outSource);
 
     #pragma warning(push)
     #pragma warning(disable: 4251)  // ComPtr는 dll-interface가 필요하지 않음
