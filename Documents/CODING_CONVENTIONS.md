@@ -86,13 +86,115 @@ bool8, char8, char16
 ### 타입 사용 규칙
 - **항상 사용**: 플랫폼 독립적 코드 작성을 위해 커스텀 타입 사용
 - **예외**: Windows API 타입 (HWND, HRESULT, DWORD 등)은 그대로 사용
-- **STL 호환**: `std::string`, `std::vector` 등은 표준 라이브러리 타입 그대로 사용
+- **엔진 타입 우선**: 컨테이너는 `Excep::Container`, 포인터는 `Excep::Memory` 사용
+- **STL 사용 제한**: 서드파티 라이브러리 인터페이스 등 필요한 경우에만 STL 직접 사용
 
 ### 타입 크기 검증
 - 새로운 타입 정의 시 `static_assert`로 크기 검증:
 ```cpp
 static_assert(sizeof(int32) == 4, "int32 must be 4 bytes");
 ```
+
+### 컨테이너 사용
+`Excep::Container`에 구현된 엔진 컨테이너를 사용합니다.
+
+**사용 가능한 컨테이너:**
+```cpp
+// 동적 배열
+DynamicArray<T>         // std::vector 래퍼
+
+// 고정 크기 배열
+StaticArray<T, N>       // std::array 래퍼
+
+// 맵 (Key-Value)
+TreeMap<K, V>           // std::map 래퍼 (정렬됨, O(log n))
+HashMap<K, V>           // std::unordered_map 래퍼 (정렬 안 됨, O(1))
+
+// 집합 (Set)
+TreeSet<T>              // std::set 래퍼 (정렬됨, O(log n))
+HashSet<T>              // std::unordered_set 래퍼 (정렬 안 됨, O(1))
+
+// 문자열
+String8                 // UTF-8 문자열 (char8 기반)
+String16                // UTF-16 문자열 (char16 기반, Windows API 호환)
+```
+
+**사용 예시:**
+```cpp
+using namespace Excep::Container;
+
+// 동적 배열
+DynamicArray<int32> numbers;
+numbers.Add(10);
+numbers.Add(20);
+int32 first = numbers.GetAt(0);
+
+// 맵
+HashMap<String8, int32> scores;
+scores.Insert(String8("player1"), 100);
+if (scores.Contains(String8("player1")))
+{
+    int32 score = scores.GetAt(String8("player1"));
+}
+
+// 문자열 (Windows API와 함께 사용)
+String16 filePath = L"C:\\path\\to\\file.txt";
+CreateFileW(filePath.GetCString(), ...);
+```
+
+**규칙:**
+- STL 컨테이너(`std::vector`, `std::map` 등) 대신 엔진 컨테이너 사용
+- `std::string`, `std::wstring` 대신 `String8`, `String16` 사용
+- 예외: 서드파티 라이브러리와의 인터페이스에서는 STL 사용 가능
+
+### 스마트 포인터 사용
+Raw 포인터 사용을 지양하고 `Excep::Memory`의 스마트 포인터를 사용합니다.
+
+**사용 가능한 스마트 포인터:**
+```cpp
+// 독점 소유권 포인터
+UniquePtr<T>            // std::unique_ptr 래퍼 (이동 전용)
+
+// 공유 소유권 포인터
+SharedPtr<T>            // std::shared_ptr 래퍼 (복사 가능, 참조 카운팅)
+
+// 약한 참조 포인터
+WeakPtr<T>              // std::weak_ptr 래퍼 (순환 참조 방지)
+```
+
+**사용 예시:**
+```cpp
+using namespace Excep::Memory;
+
+// UniquePtr - 독점 소유권
+auto renderer = MakeUnique<D3D11Renderer>();
+renderer->Initialize(hwnd, width, height);
+
+// SharedPtr - 공유 소유권
+auto texture = MakeShared<Texture>();
+auto copy = texture;  // 복사 가능
+uint64 refCount = texture.GetUseCount();  // 참조 카운트: 2
+
+// WeakPtr - 순환 참조 방지
+WeakPtr<Texture> weakTexture = texture;
+if (!weakTexture.IsExpired())
+{
+    auto lockedTexture = weakTexture.Lock();
+    lockedTexture->Use();
+}
+```
+
+**포인터 선택 가이드:**
+- **UniquePtr**: 기본 선택. 명확한 소유권이 있는 경우
+- **SharedPtr**: 여러 곳에서 소유권을 공유해야 하는 경우
+- **WeakPtr**: 순환 참조를 방지해야 하는 경우 (캐싱, 옵저버 패턴 등)
+- **Raw 포인터**: 소유권이 없는 참조만 필요한 경우 (매개변수 전달 등)
+
+**규칙:**
+- `new`/`delete` 직접 사용 금지 (스마트 포인터 또는 스택 할당 사용)
+- 소유권이 명확한 경우 `UniquePtr` 우선 사용
+- 팩토리 함수는 `MakeUnique`, `MakeShared` 사용
+- Raw 포인터는 non-owning reference로만 사용
 
 ## 4. API 디자인
 
@@ -177,6 +279,8 @@ Source/
   Engine/
     Core/          - 핵심 타입, API 정의
     Math/          - 수학 라이브러리
+    Container/     - 컨테이너 (배열, 맵, 집합, 문자열)
+    Memory/        - 메모리 관리 (스마트 포인터)
     Graphics/      - 렌더링 시스템
       D3D11/       - DirectX 11 구현
   Editor/
