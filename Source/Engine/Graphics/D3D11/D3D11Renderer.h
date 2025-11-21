@@ -26,7 +26,8 @@ namespace Graphics
 enum class MeshType
 {
     Triangle,
-    Cube
+    Cube,
+    Sphere
 };
 
 struct SpawnedObject
@@ -99,6 +100,7 @@ private:
     bool8 CreateRenderTargetView();
     bool8 CreateVertexBuffer();
     bool8 CreateCubeVertexBuffer();
+    bool8 CreateSphereVertexBuffer();
     bool8 CreateConstantBuffer();
     bool8 CompileShaders();
     bool8 CreateInputLayout();
@@ -113,6 +115,7 @@ private:
     ComPtr<ID3D11RenderTargetView> m_renderTargetView;
     ComPtr<ID3D11Buffer> m_vertexBuffer;
     ComPtr<ID3D11Buffer> m_cubeVertexBuffer;
+    ComPtr<ID3D11Buffer> m_sphereVertexBuffer;
     ComPtr<ID3D11Buffer> m_constantBuffer;
     ComPtr<ID3D11VertexShader> m_vertexShader;
     ComPtr<ID3D11PixelShader> m_pixelShader;
@@ -123,6 +126,7 @@ private:
     TransformData m_transformData;
     int32 m_width;
     int32 m_height;
+    uint32 m_sphereVertexCount;
 };
 
 } // namespace Graphics

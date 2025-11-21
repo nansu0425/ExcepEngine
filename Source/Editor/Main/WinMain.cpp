@@ -121,6 +121,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                 ImGui::RadioButton("Triangle", (int*)&selectedType, (int)MeshType::Triangle);
                 ImGui::SameLine();
                 ImGui::RadioButton("Cube", (int*)&selectedType, (int)MeshType::Cube);
+                ImGui::SameLine();
+                ImGui::RadioButton("Sphere", (int*)&selectedType, (int)MeshType::Sphere);
 
                 ImGui::Separator();
                 ImGui::DragFloat("Spawn X", &spawnX, 0.01f, -1.0f, 1.0f);
@@ -146,7 +148,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                 if (!g_spawnedObjects.IsEmpty())
                 {
                     const SpawnedObject& last = g_spawnedObjects.GetBack();
-                    const char* typeName = (last.type == MeshType::Triangle) ? "Triangle" : "Cube";
+                    const char* typeName = "Unknown";
+                    if (last.type == MeshType::Triangle)
+                        typeName = "Triangle";
+                    else if (last.type == MeshType::Cube)
+                        typeName = "Cube";
+                    else if (last.type == MeshType::Sphere)
+                        typeName = "Sphere";
                     ImGui::Text("Last Object: %s at (%.2f, %.2f)", typeName, last.position.x, last.position.y);
                 }
                 ImGui::End();

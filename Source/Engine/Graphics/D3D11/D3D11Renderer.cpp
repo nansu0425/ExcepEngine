@@ -14,7 +14,7 @@ namespace Graphics
 {
 
 D3D11Renderer::D3D11Renderer()
-    : m_width(0), m_height(0)
+    : m_width(0), m_height(0), m_sphereVertexCount(0)
 {
     // Transform 초기화
     m_transformData.offset = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
@@ -60,6 +60,11 @@ bool8 D3D11Renderer::Initialize(HWND hwnd, int32 width, int32 height)
         return false;
     }
 
+    if (!CreateSphereVertexBuffer())
+    {
+        return false;
+    }
+
     if (!CreateConstantBuffer())
     {
         return false;
@@ -93,6 +98,7 @@ void D3D11Renderer::Shutdown()
     m_pixelShader.Reset();
     m_vertexShader.Reset();
     m_constantBuffer.Reset();
+    m_sphereVertexBuffer.Reset();
     m_cubeVertexBuffer.Reset();
     m_vertexBuffer.Reset();
     m_renderTargetView.Reset();
@@ -321,6 +327,86 @@ bool8 D3D11Renderer::CreateCubeVertexBuffer()
     initData.pSysMem = vertices;
 
     HRESULT hr = m_device->CreateBuffer(&bufferDesc, &initData, m_cubeVertexBuffer.GetAddressOf());
+    return SUCCEEDED(hr);
+}
+
+bool8 D3D11Renderer::CreateSphereVertexBuffer()
+{
+    // UV Sphere 생성
+    const float32 radius = 0.3f;
+    const uint32 stacks = 16;  // 수평 분할
+    const uint32 slices = 16;  // 수직 분할
+    const float32 zOffset = 0.3f;  // DirectX Clip Space: Z를 0.0 ~ 1.0 범위로
+    const float32 PI = 3.14159265359f;
+
+    Container::DynamicArray<Vertex> vertices;
+
+    // 각 스택과 슬라이스에 대해 삼각형 생성
+    for (uint32 stack = 0; stack < stacks; ++stack)
+    {
+        float32 phi1 = PI * static_cast<float32>(stack) / static_cast<float32>(stacks);
+        float32 phi2 = PI * static_cast<float32>(stack + 1) / static_cast<float32>(stacks);
+
+        for (uint32 slice = 0; slice < slices; ++slice)
+        {
+            float32 theta1 = 2.0f * PI * static_cast<float32>(slice) / static_cast<float32>(slices);
+            float32 theta2 = 2.0f * PI * static_cast<float32>(slice + 1) / static_cast<float32>(slices);
+
+            // 4개의 정점 계산
+            Vector3 v1(
+                radius * sinf(phi1) * cosf(theta1),
+                radius * cosf(phi1),
+                radius * sinf(phi1) * sinf(theta1) + zOffset
+            );
+            Vector3 v2(
+                radius * sinf(phi1) * cosf(theta2),
+                radius * cosf(phi1),
+                radius * sinf(phi1) * sinf(theta2) + zOffset
+            );
+            Vector3 v3(
+                radius * sinf(phi2) * cosf(theta2),
+                radius * cosf(phi2),
+                radius * sinf(phi2) * sinf(theta2) + zOffset
+            );
+            Vector3 v4(
+                radius * sinf(phi2) * cosf(theta1),
+                radius * cosf(phi2),
+                radius * sinf(phi2) * sinf(theta1) + zOffset
+            );
+
+            // 색상 (그라데이션)
+            float32 colorFactor = static_cast<float32>(stack) / static_cast<float32>(stacks);
+            Vector4 color(colorFactor, 0.5f, 1.0f - colorFactor, 1.0f);
+
+            // 두 개의 삼각형으로 쿼드 구성 (CCW)
+            if (stack != 0)  // 상단 극점 제외
+            {
+                vertices.Add({ v1, color });
+                vertices.Add({ v2, color });
+                vertices.Add({ v3, color });
+            }
+
+            if (stack != stacks - 1)  // 하단 극점 제외
+            {
+                vertices.Add({ v1, color });
+                vertices.Add({ v3, color });
+                vertices.Add({ v4, color });
+            }
+        }
+    }
+
+    D3D11_BUFFER_DESC bufferDesc = {};
+    bufferDesc.Usage = D3D11_USAGE_DEFAULT;
+    bufferDesc.ByteWidth = static_cast<uint32>(vertices.GetSize() * sizeof(Vertex));
+    bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+    bufferDesc.CPUAccessFlags = 0;
+
+    D3D11_SUBRESOURCE_DATA initData = {};
+    initData.pSysMem = vertices.GetData();
+
+    m_sphereVertexCount = static_cast<uint32>(vertices.GetSize());
+
+    HRESULT hr = m_device->CreateBuffer(&bufferDesc, &initData, m_sphereVertexBuffer.GetAddressOf());
     return SUCCEEDED(hr);
 }
 
@@ -558,6 +644,11 @@ void D3D11Renderer::RenderObjects(const Container::DynamicArray<SpawnedObject>& 
         {
             m_deviceContext->IASetVertexBuffers(0, 1, m_cubeVertexBuffer.GetAddressOf(), &stride, &offset);
             m_deviceContext->Draw(36, 0);
+        }
+        else if (obj.type == MeshType::Sphere)
+        {
+            m_deviceContext->IASetVertexBuffers(0, 1, m_sphereVertexBuffer.GetAddressOf(), &stride, &offset);
+            m_deviceContext->Draw(m_sphereVertexCount, 0);
         }
     }
 }
