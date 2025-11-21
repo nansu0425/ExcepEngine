@@ -9,15 +9,6 @@ using Excep::Math::Vector4;
 using Excep::Container::String8;
 using Excep::Container::String16;
 
-// Forward declarations
-namespace Excep
-{
-namespace Container
-{
-    template<typename T> class DynamicArray;
-}
-}
-
 namespace Excep
 {
 namespace Graphics
@@ -28,12 +19,6 @@ enum class MeshType
     Triangle,
     Cube,
     Sphere
-};
-
-struct SpawnedObject
-{
-    MeshType type;
-    Math::Vector3 position;
 };
 
 struct Vertex
@@ -90,10 +75,6 @@ public:
     /// @param x X축 오프셋
     /// @param y Y축 오프셋
     void SetTriangleOffset(float32 x, float32 y);
-
-    /// @brief 여러 오브젝트를 렌더링합니다
-    /// @param objects 오브젝트들의 배열
-    void RenderObjects(const Container::DynamicArray<SpawnedObject>& objects);
 
     /// @brief 렌더링 시작 (Clear + 렌더 타겟 설정)
     void BeginRender();
