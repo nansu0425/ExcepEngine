@@ -23,6 +23,18 @@ namespace Excep
 namespace Graphics
 {
 
+enum class MeshType
+{
+    Triangle,
+    Cube
+};
+
+struct SpawnedObject
+{
+    MeshType type;
+    Math::Vector3 position;
+};
+
 struct Vertex
 {
     Vector3 position;
@@ -78,14 +90,15 @@ public:
     /// @param y Y축 오프셋
     void SetTriangleOffset(float32 x, float32 y);
 
-    /// @brief 여러 삼각형을 렌더링합니다
-    /// @param positions 삼각형들의 위치 배열
-    void RenderTriangles(const Container::DynamicArray<Math::Vector3>& positions);
+    /// @brief 여러 오브젝트를 렌더링합니다
+    /// @param objects 오브젝트들의 배열
+    void RenderObjects(const Container::DynamicArray<SpawnedObject>& objects);
 
 private:
     bool8 CreateDeviceAndSwapChain(HWND hwnd, int32 width, int32 height);
     bool8 CreateRenderTargetView();
     bool8 CreateVertexBuffer();
+    bool8 CreateCubeVertexBuffer();
     bool8 CreateConstantBuffer();
     bool8 CompileShaders();
     bool8 CreateInputLayout();
@@ -99,6 +112,7 @@ private:
     ComPtr<IDXGISwapChain> m_swapChain;
     ComPtr<ID3D11RenderTargetView> m_renderTargetView;
     ComPtr<ID3D11Buffer> m_vertexBuffer;
+    ComPtr<ID3D11Buffer> m_cubeVertexBuffer;
     ComPtr<ID3D11Buffer> m_constantBuffer;
     ComPtr<ID3D11VertexShader> m_vertexShader;
     ComPtr<ID3D11PixelShader> m_pixelShader;

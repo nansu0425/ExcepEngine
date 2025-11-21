@@ -24,7 +24,7 @@ UniquePtr<D3D11Renderer> g_renderer;
 UniquePtr<InputManager> g_inputManager;
 HWND g_hwnd = nullptr;
 bool8 g_isRunning = true;
-DynamicArray<Vector3> g_trianglePositions;
+DynamicArray<SpawnedObject> g_spawnedObjects;
 
 // 전방 선언
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -69,29 +69,29 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
                 // 방향키 입력 처리 (ImGui가 키보드를 캡처하지 않을 때만)
                 ImGuiIO& io = ImGui::GetIO();
-                if (!io.WantCaptureKeyboard && !g_trianglePositions.IsEmpty())
+                if (!io.WantCaptureKeyboard && !g_spawnedObjects.IsEmpty())
                 {
                     const float32 moveSpeed = 0.01f;
-                    Vector3& lastTriangle = g_trianglePositions.GetBack();
+                    Vector3& lastPos = g_spawnedObjects.GetBack().position;
 
                     if (g_inputManager->IsKeyDown(VK_LEFT))
                     {
-                        lastTriangle.x -= moveSpeed;
+                        lastPos.x -= moveSpeed;
                     }
 
                     if (g_inputManager->IsKeyDown(VK_RIGHT))
                     {
-                        lastTriangle.x += moveSpeed;
+                        lastPos.x += moveSpeed;
                     }
 
                     if (g_inputManager->IsKeyDown(VK_UP))
                     {
-                        lastTriangle.y += moveSpeed;
+                        lastPos.y += moveSpeed;
                     }
 
                     if (g_inputManager->IsKeyDown(VK_DOWN))
                     {
-                        lastTriangle.y -= moveSpeed;
+                        lastPos.y -= moveSpeed;
                     }
                 }
 
@@ -109,37 +109,50 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                     ImGui::EndMainMenuBar();
                 }
 
-                // Triangle Spawner UI
+                // Object Spawner UI
                 static float32 spawnX = 0.0f;
                 static float32 spawnY = 0.0f;
+                static MeshType selectedType = MeshType::Triangle;
 
-                ImGui::Begin("Triangle Spawner");
+                ImGui::Begin("Object Spawner");
+
+                // 메시 타입 선택
+                ImGui::Text("Mesh Type:");
+                ImGui::RadioButton("Triangle", (int*)&selectedType, (int)MeshType::Triangle);
+                ImGui::SameLine();
+                ImGui::RadioButton("Cube", (int*)&selectedType, (int)MeshType::Cube);
+
+                ImGui::Separator();
                 ImGui::DragFloat("Spawn X", &spawnX, 0.01f, -1.0f, 1.0f);
                 ImGui::DragFloat("Spawn Y", &spawnY, 0.01f, -1.0f, 1.0f);
 
-                if (ImGui::Button("Spawn Triangle"))
+                if (ImGui::Button("Spawn"))
                 {
-                    g_trianglePositions.Add(Vector3(spawnX, spawnY, 0.0f));
+                    SpawnedObject obj;
+                    obj.type = selectedType;
+                    obj.position = Vector3(spawnX, spawnY, 0.0f);
+                    g_spawnedObjects.Add(obj);
                 }
 
                 ImGui::SameLine();
                 if (ImGui::Button("Clear All"))
                 {
-                    g_trianglePositions.Clear();
+                    g_spawnedObjects.Clear();
                 }
 
                 ImGui::Separator();
-                ImGui::Text("Total Triangles: %llu", g_trianglePositions.GetSize());
+                ImGui::Text("Total Objects: %llu", g_spawnedObjects.GetSize());
 
-                if (!g_trianglePositions.IsEmpty())
+                if (!g_spawnedObjects.IsEmpty())
                 {
-                    const Vector3& last = g_trianglePositions.GetBack();
-                    ImGui::Text("Last Triangle: (%.2f, %.2f)", last.x, last.y);
+                    const SpawnedObject& last = g_spawnedObjects.GetBack();
+                    const char* typeName = (last.type == MeshType::Triangle) ? "Triangle" : "Cube";
+                    ImGui::Text("Last Object: %s at (%.2f, %.2f)", typeName, last.position.x, last.position.y);
                 }
                 ImGui::End();
 
                 // 1. Engine 렌더링 (Clear + Draw)
-                g_renderer->RenderTriangles(g_trianglePositions);
+                g_renderer->RenderObjects(g_spawnedObjects);
 
                 // 2. ImGui 렌더링 (UI 오버레이)
                 ImGui::Render();

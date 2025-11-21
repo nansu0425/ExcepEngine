@@ -55,6 +55,11 @@ bool8 D3D11Renderer::Initialize(HWND hwnd, int32 width, int32 height)
         return false;
     }
 
+    if (!CreateCubeVertexBuffer())
+    {
+        return false;
+    }
+
     if (!CreateConstantBuffer())
     {
         return false;
@@ -88,6 +93,7 @@ void D3D11Renderer::Shutdown()
     m_pixelShader.Reset();
     m_vertexShader.Reset();
     m_constantBuffer.Reset();
+    m_cubeVertexBuffer.Reset();
     m_vertexBuffer.Reset();
     m_renderTargetView.Reset();
     m_swapChain.Reset();
@@ -246,6 +252,75 @@ bool8 D3D11Renderer::CreateVertexBuffer()
     initData.pSysMem = vertices;
 
     HRESULT hr = m_device->CreateBuffer(&bufferDesc, &initData, m_vertexBuffer.GetAddressOf());
+    return SUCCEEDED(hr);
+}
+
+bool8 D3D11Renderer::CreateCubeVertexBuffer()
+{
+    // DirectX Clip Space: Z는 0.0 ~ 1.0 범위여야 함
+    // 큐브 정점 (36개 = 6면 × 6정점/면) - CCW 순서
+    float32 size = 0.3f;
+    Vertex vertices[] =
+    {
+        // Front face (Z=0.0) - 빨강 (near plane)
+        { Vector3(-size, -size, 0.0f), Vector4(1.0f, 0.0f, 0.0f, 1.0f) },
+        { Vector3(size, -size, 0.0f), Vector4(1.0f, 0.0f, 0.0f, 1.0f) },
+        { Vector3(size, size, 0.0f), Vector4(1.0f, 0.0f, 0.0f, 1.0f) },
+        { Vector3(-size, -size, 0.0f), Vector4(1.0f, 0.0f, 0.0f, 1.0f) },
+        { Vector3(size, size, 0.0f), Vector4(1.0f, 0.0f, 0.0f, 1.0f) },
+        { Vector3(-size, size, 0.0f), Vector4(1.0f, 0.0f, 0.0f, 1.0f) },
+
+        // Back face (Z=0.6) - 초록 (far plane)
+        { Vector3(size, -size, 0.6f), Vector4(0.0f, 1.0f, 0.0f, 1.0f) },
+        { Vector3(-size, -size, 0.6f), Vector4(0.0f, 1.0f, 0.0f, 1.0f) },
+        { Vector3(-size, size, 0.6f), Vector4(0.0f, 1.0f, 0.0f, 1.0f) },
+        { Vector3(size, -size, 0.6f), Vector4(0.0f, 1.0f, 0.0f, 1.0f) },
+        { Vector3(-size, size, 0.6f), Vector4(0.0f, 1.0f, 0.0f, 1.0f) },
+        { Vector3(size, size, 0.6f), Vector4(0.0f, 1.0f, 0.0f, 1.0f) },
+
+        // Left face (X-) - 파랑
+        { Vector3(-size, -size, 0.6f), Vector4(0.0f, 0.0f, 1.0f, 1.0f) },
+        { Vector3(-size, -size, 0.0f), Vector4(0.0f, 0.0f, 1.0f, 1.0f) },
+        { Vector3(-size, size, 0.0f), Vector4(0.0f, 0.0f, 1.0f, 1.0f) },
+        { Vector3(-size, -size, 0.6f), Vector4(0.0f, 0.0f, 1.0f, 1.0f) },
+        { Vector3(-size, size, 0.0f), Vector4(0.0f, 0.0f, 1.0f, 1.0f) },
+        { Vector3(-size, size, 0.6f), Vector4(0.0f, 0.0f, 1.0f, 1.0f) },
+
+        // Right face (X+) - 노랑
+        { Vector3(size, -size, 0.0f), Vector4(1.0f, 1.0f, 0.0f, 1.0f) },
+        { Vector3(size, -size, 0.6f), Vector4(1.0f, 1.0f, 0.0f, 1.0f) },
+        { Vector3(size, size, 0.6f), Vector4(1.0f, 1.0f, 0.0f, 1.0f) },
+        { Vector3(size, -size, 0.0f), Vector4(1.0f, 1.0f, 0.0f, 1.0f) },
+        { Vector3(size, size, 0.6f), Vector4(1.0f, 1.0f, 0.0f, 1.0f) },
+        { Vector3(size, size, 0.0f), Vector4(1.0f, 1.0f, 0.0f, 1.0f) },
+
+        // Top face (Y+) - 자홍
+        { Vector3(-size, size, 0.0f), Vector4(1.0f, 0.0f, 1.0f, 1.0f) },
+        { Vector3(size, size, 0.0f), Vector4(1.0f, 0.0f, 1.0f, 1.0f) },
+        { Vector3(size, size, 0.6f), Vector4(1.0f, 0.0f, 1.0f, 1.0f) },
+        { Vector3(-size, size, 0.0f), Vector4(1.0f, 0.0f, 1.0f, 1.0f) },
+        { Vector3(size, size, 0.6f), Vector4(1.0f, 0.0f, 1.0f, 1.0f) },
+        { Vector3(-size, size, 0.6f), Vector4(1.0f, 0.0f, 1.0f, 1.0f) },
+
+        // Bottom face (Y-) - 시안
+        { Vector3(-size, -size, 0.6f), Vector4(0.0f, 1.0f, 1.0f, 1.0f) },
+        { Vector3(size, -size, 0.6f), Vector4(0.0f, 1.0f, 1.0f, 1.0f) },
+        { Vector3(size, -size, 0.0f), Vector4(0.0f, 1.0f, 1.0f, 1.0f) },
+        { Vector3(-size, -size, 0.6f), Vector4(0.0f, 1.0f, 1.0f, 1.0f) },
+        { Vector3(size, -size, 0.0f), Vector4(0.0f, 1.0f, 1.0f, 1.0f) },
+        { Vector3(-size, -size, 0.0f), Vector4(0.0f, 1.0f, 1.0f, 1.0f) }
+    };
+
+    D3D11_BUFFER_DESC bufferDesc = {};
+    bufferDesc.Usage = D3D11_USAGE_DEFAULT;
+    bufferDesc.ByteWidth = sizeof(vertices);
+    bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+    bufferDesc.CPUAccessFlags = 0;
+
+    D3D11_SUBRESOURCE_DATA initData = {};
+    initData.pSysMem = vertices;
+
+    HRESULT hr = m_device->CreateBuffer(&bufferDesc, &initData, m_cubeVertexBuffer.GetAddressOf());
     return SUCCEEDED(hr);
 }
 
@@ -426,9 +501,9 @@ void D3D11Renderer::SetTriangleOffset(float32 x, float32 y)
     m_transformData.offset.w = 0.0f;
 }
 
-void D3D11Renderer::RenderTriangles(const Container::DynamicArray<Math::Vector3>& positions)
+void D3D11Renderer::RenderObjects(const Container::DynamicArray<SpawnedObject>& objects)
 {
-    if (!m_deviceContext || positions.IsEmpty())
+    if (!m_deviceContext || objects.IsEmpty())
     {
         // 배열이 비어있어도 화면은 클리어
         if (m_deviceContext)
@@ -450,18 +525,19 @@ void D3D11Renderer::RenderTriangles(const Container::DynamicArray<Math::Vector3>
     m_deviceContext->VSSetShader(m_vertexShader.Get(), nullptr, 0);
     m_deviceContext->PSSetShader(m_pixelShader.Get(), nullptr, 0);
     m_deviceContext->IASetInputLayout(m_inputLayout.Get());
+    m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
     uint32 stride = sizeof(Vertex);
     uint32 offset = 0;
-    m_deviceContext->IASetVertexBuffers(0, 1, m_vertexBuffer.GetAddressOf(), &stride, &offset);
-    m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-    // 3. 각 삼각형 렌더링
-    for (uint64 i = 0; i < positions.GetSize(); ++i)
+    // 3. 각 오브젝트 렌더링
+    for (uint64 i = 0; i < objects.GetSize(); ++i)
     {
+        const SpawnedObject& obj = objects[i];
+
         // Constant Buffer 업데이트
         TransformData transformData;
-        transformData.offset = Vector4(positions[i].x, positions[i].y, positions[i].z, 0.0f);
+        transformData.offset = Vector4(obj.position.x, obj.position.y, obj.position.z, 0.0f);
 
         D3D11_MAPPED_SUBRESOURCE mappedResource;
         if (SUCCEEDED(m_deviceContext->Map(m_constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource)))
@@ -471,7 +547,18 @@ void D3D11Renderer::RenderTriangles(const Container::DynamicArray<Math::Vector3>
         }
 
         m_deviceContext->VSSetConstantBuffers(0, 1, m_constantBuffer.GetAddressOf());
-        m_deviceContext->Draw(3, 0);
+
+        // 타입에 따라 다른 버퍼와 정점 수 사용
+        if (obj.type == MeshType::Triangle)
+        {
+            m_deviceContext->IASetVertexBuffers(0, 1, m_vertexBuffer.GetAddressOf(), &stride, &offset);
+            m_deviceContext->Draw(3, 0);
+        }
+        else if (obj.type == MeshType::Cube)
+        {
+            m_deviceContext->IASetVertexBuffers(0, 1, m_cubeVertexBuffer.GetAddressOf(), &stride, &offset);
+            m_deviceContext->Draw(36, 0);
+        }
     }
 }
 
