@@ -3,12 +3,9 @@
 
 namespace Excep
 {
-namespace World
-{
 
 CRenderer::CRenderer()
 {
 }
 
-} // namespace World
 } // namespace Excep

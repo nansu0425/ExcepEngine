@@ -3,8 +3,6 @@
 
 namespace Excep
 {
-namespace World
-{
 
 CTransform::CTransform()
     : m_position(0.0f, 0.0f, 0.0f)
@@ -13,5 +11,4 @@ CTransform::CTransform()
 {
 }
 
-} // namespace World
 } // namespace Excep

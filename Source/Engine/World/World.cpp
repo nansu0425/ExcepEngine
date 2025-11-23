@@ -5,8 +5,6 @@
 
 namespace Excep
 {
-namespace World
-{
 
 World::World()
 {
@@ -14,7 +12,7 @@ World::World()
 
 WObject* World::SpawnObject()
 {
-    Memory::UniquePtr<WObject> obj = Memory::MakeUnique<WObject>();
+    UniquePtr<WObject> obj = MakeUnique<WObject>();
     WObject* ptr = obj.Get();
     m_objects.Add(std::move(obj));
 
@@ -29,7 +27,7 @@ void World::Update()
     }
 }
 
-void World::Render(Graphics::D3D11Renderer* renderer)
+void World::Render(D3D11Renderer* renderer)
 {
     if (!renderer)
     {
@@ -58,5 +56,4 @@ void World::Clear()
     m_objects.Clear();
 }
 
-} // namespace World
 } // namespace Excep

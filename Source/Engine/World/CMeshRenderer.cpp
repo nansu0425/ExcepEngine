@@ -6,15 +6,13 @@
 
 namespace Excep
 {
-namespace World
-{
 
 CMeshRenderer::CMeshRenderer()
-    : m_meshType(Graphics::MeshType::Triangle)
+    : m_meshType(MeshType::Triangle)
 {
 }
 
-void CMeshRenderer::Render(Graphics::D3D11Renderer* renderer)
+void CMeshRenderer::Render(D3D11Renderer* renderer)
 {
     if (!renderer)
     {
@@ -25,5 +23,4 @@ void CMeshRenderer::Render(Graphics::D3D11Renderer* renderer)
     renderer->RenderSingleMesh(m_meshType, GetOwner()->GetTransform()->GetPosition());
 }
 
-} // namespace World
 } // namespace Excep

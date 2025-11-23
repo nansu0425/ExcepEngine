@@ -10,8 +10,6 @@
 
 namespace Excep
 {
-namespace Graphics
-{
 
 D3D11Renderer::D3D11Renderer()
     : m_width(0), m_height(0), m_sphereVertexCount(0)
@@ -339,7 +337,7 @@ bool8 D3D11Renderer::CreateSphereVertexBuffer()
     const float32 zOffset = 0.3f;  // DirectX Clip Space: Z를 0.0 ~ 1.0 범위로
     const float32 PI = 3.14159265359f;
 
-    Container::DynamicArray<Vertex> vertices;
+    DynamicArray<Vertex> vertices;
 
     // 각 스택과 슬라이스에 대해 삼각형 생성
     for (uint32 stack = 0; stack < stacks; ++stack)
@@ -606,7 +604,7 @@ void D3D11Renderer::BeginRender()
     m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
-void D3D11Renderer::RenderSingleMesh(MeshType type, const Math::Vector3& position)
+void D3D11Renderer::RenderSingleMesh(MeshType type, const Vector3& position)
 {
     if (!m_deviceContext)
     {
@@ -647,5 +645,4 @@ void D3D11Renderer::RenderSingleMesh(MeshType type, const Math::Vector3& positio
     }
 }
 
-} // namespace Graphics
 } // namespace Excep

@@ -3,8 +3,6 @@
 
 namespace Excep
 {
-namespace Math
-{
 
 struct Vector3
 {
@@ -124,5 +122,4 @@ inline Vector3& Vector3::operator/=(float32 scalar)
     return *this;
 }
 
-} // namespace Math
 } // namespace Excep

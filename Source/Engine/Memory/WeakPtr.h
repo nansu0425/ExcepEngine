@@ -6,8 +6,6 @@
 
 namespace Excep
 {
-namespace Memory
-{
 
 /// @brief std::weak_ptr을 래핑한 약한 참조 스마트 포인터
 /// @tparam T 관리할 객체의 타입
@@ -134,5 +132,4 @@ SharedPtr<T>::SharedPtr(const WeakPtr<T>& weakPtr)
 {
 }
 
-} // namespace Memory
 } // namespace Excep

@@ -7,8 +7,6 @@
 
 namespace Excep
 {
-namespace Memory
-{
 
 /// @brief UniquePtr를 생성하는 헬퍼 함수
 /// @tparam T 생성할 객체의 타입
@@ -32,5 +30,4 @@ SharedPtr<T> MakeShared(Args&&... args)
     return SharedPtr<T>(std::make_shared<T>(std::forward<Args>(args)...));
 }
 
-} // namespace Memory
 } // namespace Excep

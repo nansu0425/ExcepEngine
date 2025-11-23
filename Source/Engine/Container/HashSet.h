@@ -6,8 +6,6 @@
 
 namespace Excep
 {
-namespace Container
-{
 
 /// @brief std::unordered_set을 래핑한 해시 기반 unique 요소 집합 컨테이너
 /// @tparam T 저장할 요소의 타입
@@ -133,5 +131,4 @@ private:
     std::unordered_set<T> m_data;
 };
 
-} // namespace Container
 } // namespace Excep

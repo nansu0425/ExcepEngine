@@ -3,8 +3,6 @@
 
 namespace Excep
 {
-namespace Input
-{
 
 InputManager::InputManager()
 {
@@ -60,5 +58,4 @@ bool8 InputManager::IsKeyReleased(uint32 vkCode) const
     return !m_currentKeyState[vkCode] && m_previousKeyState[vkCode];
 }
 
-} // namespace Input
 } // namespace Excep

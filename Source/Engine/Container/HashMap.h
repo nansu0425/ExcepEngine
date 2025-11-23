@@ -7,8 +7,6 @@
 
 namespace Excep
 {
-namespace Container
-{
 
 /// @brief std::unordered_map을 래핑한 해시 기반 Key-Value 맵 컨테이너
 /// @tparam K Key 타입
@@ -200,5 +198,4 @@ private:
     std::unordered_map<K, V> m_data;
 };
 
-} // namespace Container
 } // namespace Excep

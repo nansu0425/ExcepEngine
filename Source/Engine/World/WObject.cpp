@@ -4,8 +4,6 @@
 
 namespace Excep
 {
-namespace World
-{
 
 WObject::WObject()
 {
@@ -21,5 +19,4 @@ void WObject::Update()
     }
 }
 
-} // namespace World
 } // namespace Excep

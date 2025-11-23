@@ -7,8 +7,6 @@
 
 namespace Excep
 {
-namespace World
-{
 
 // Forward declaration
 class CTransform;
@@ -34,10 +32,10 @@ public:
     {
         static_assert(std::is_base_of<CComponent, T>::value, "T must derive from CComponent");
 
-        Memory::UniquePtr<T> component = Memory::MakeUnique<T>();
+        UniquePtr<T> component = MakeUnique<T>();
         T* ptr = component.Get();
         ptr->SetOwner(this);
-        m_components.Add(Memory::UniquePtr<CComponent>(component.Release()));
+        m_components.Add(UniquePtr<CComponent>(component.Release()));
 
         return ptr;
     }
@@ -72,11 +70,10 @@ public:
 private:
     #pragma warning(push)
     #pragma warning(disable: 4251)
-    Container::DynamicArray<Memory::UniquePtr<CComponent>> m_components;
+    DynamicArray<UniquePtr<CComponent>> m_components;
     #pragma warning(pop)
 
     CTransform* m_transform; // 빠른 접근을 위한 Transform 참조 (실제 소유권은 m_components에 있음)
 };
 
-} // namespace World
 } // namespace Excep

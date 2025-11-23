@@ -5,8 +5,6 @@
 
 namespace Excep
 {
-namespace Container
-{
 
 /// @brief std::string을 래핑한 UTF-8 문자열 컨테이너
 class String8
@@ -279,5 +277,4 @@ private:
     std::string m_data;
 };
 
-} // namespace Container
 } // namespace Excep

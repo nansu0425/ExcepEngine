@@ -5,8 +5,6 @@
 
 namespace Excep
 {
-namespace Container
-{
 
 /// @brief std::vector를 래핑한 동적 배열 컨테이너
 /// @tparam T 저장할 요소의 타입
@@ -239,5 +237,4 @@ private:
     std::vector<T> m_data;
 };
 
-} // namespace Container
 } // namespace Excep

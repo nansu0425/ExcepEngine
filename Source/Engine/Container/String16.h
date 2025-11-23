@@ -5,8 +5,6 @@
 
 namespace Excep
 {
-namespace Container
-{
 
 /// @brief std::wstring을 래핑한 UTF-16 문자열 컨테이너
 class String16
@@ -279,5 +277,4 @@ private:
     std::wstring m_data;
 };
 
-} // namespace Container
 } // namespace Excep

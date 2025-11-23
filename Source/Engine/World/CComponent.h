@@ -3,8 +3,6 @@
 
 namespace Excep
 {
-namespace World
-{
 
 // Forward declaration
 class WObject;
@@ -31,5 +29,4 @@ protected:
     WObject* m_owner;
 };
 
-} // namespace World
 } // namespace Excep

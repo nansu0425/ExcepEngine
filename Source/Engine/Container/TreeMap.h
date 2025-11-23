@@ -7,8 +7,6 @@
 
 namespace Excep
 {
-namespace Container
-{
 
 /// @brief std::map을 래핑한 정렬된 Key-Value 맵 컨테이너
 /// @tparam K Key 타입
@@ -193,5 +191,4 @@ private:
     std::map<K, V> m_data;
 };
 
-} // namespace Container
 } // namespace Excep

@@ -5,8 +5,6 @@
 
 namespace Excep
 {
-namespace Container
-{
 
 /// @brief std::array를 래핑한 고정 크기 배열 컨테이너
 /// @tparam T 저장할 요소의 타입
@@ -168,5 +166,4 @@ private:
     std::array<T, N> m_data;
 };
 
-} // namespace Container
 } // namespace Excep

@@ -5,8 +5,6 @@
 
 namespace Excep
 {
-namespace Memory
-{
 
 // Forward declaration
 template<typename T>
@@ -166,5 +164,4 @@ private:
     friend class WeakPtr;
 };
 
-} // namespace Memory
 } // namespace Excep

@@ -7,15 +7,10 @@
 // Forward declaration
 namespace Excep
 {
-namespace Graphics
-{
     class D3D11Renderer;
-}
 }
 
 namespace Excep
-{
-namespace World
 {
 
 /// @brief 모든 WObject를 관리하는 World 클래스
@@ -40,7 +35,7 @@ public:
 
     /// @brief 모든 오브젝트를 렌더링합니다
     /// @param renderer D3D11Renderer 포인터
-    void Render(Graphics::D3D11Renderer* renderer);
+    void Render(D3D11Renderer* renderer);
 
     /// @brief 모든 오브젝트를 제거합니다
     void Clear();
@@ -63,9 +58,8 @@ public:
 private:
     #pragma warning(push)
     #pragma warning(disable: 4251)
-    Container::DynamicArray<Memory::UniquePtr<WObject>> m_objects;
+    DynamicArray<UniquePtr<WObject>> m_objects;
     #pragma warning(pop)
 };
 
-} // namespace World
 } // namespace Excep

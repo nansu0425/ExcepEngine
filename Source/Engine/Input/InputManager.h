@@ -4,8 +4,6 @@
 
 namespace Excep
 {
-namespace Input
-{
 
 /// @brief 키보드 입력을 관리하는 클래스
 class EXCEP_API InputManager
@@ -42,10 +40,9 @@ private:
 
     #pragma warning(push)
     #pragma warning(disable: 4251)
-    Container::StaticArray<bool8, KEY_COUNT> m_currentKeyState;
-    Container::StaticArray<bool8, KEY_COUNT> m_previousKeyState;
+    StaticArray<bool8, KEY_COUNT> m_currentKeyState;
+    StaticArray<bool8, KEY_COUNT> m_previousKeyState;
     #pragma warning(pop)
 };
 
-} // namespace Input
 } // namespace Excep

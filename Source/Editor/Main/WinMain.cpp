@@ -11,12 +11,7 @@
 #include "imgui/backends/imgui_impl_win32.h"
 #include "imgui/backends/imgui_impl_dx11.h"
 
-using namespace Excep::Graphics;
-using namespace Excep::Input;
-using namespace Excep::Memory;
-using namespace Excep::Math;
-using namespace Excep::Container;
-using namespace Excep::World;
+using namespace Excep;
 
 #define MAX_LOADSTRING 100
 
@@ -234,8 +229,6 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
-    using Excep::Memory::MakeUnique;
-
     hInst = hInstance;
 
     int32 width = 800;

@@ -4,14 +4,8 @@
 #include <wrl/client.h>
 
 using Microsoft::WRL::ComPtr;
-using Excep::Math::Vector3;
-using Excep::Math::Vector4;
-using Excep::Container::String8;
-using Excep::Container::String16;
 
 namespace Excep
-{
-namespace Graphics
 {
 
 enum class MeshType
@@ -82,7 +76,7 @@ public:
     /// @brief 개별 메시를 렌더링합니다
     /// @param type 메시 타입
     /// @param position 메시 위치
-    void RenderSingleMesh(MeshType type, const Math::Vector3& position);
+    void RenderSingleMesh(MeshType type, const Vector3& position);
 
 private:
     bool8 CreateDeviceAndSwapChain(HWND hwnd, int32 width, int32 height);
@@ -118,5 +112,4 @@ private:
     uint32 m_sphereVertexCount;
 };
 
-} // namespace Graphics
 } // namespace Excep

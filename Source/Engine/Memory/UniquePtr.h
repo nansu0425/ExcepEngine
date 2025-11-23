@@ -5,8 +5,6 @@
 
 namespace Excep
 {
-namespace Memory
-{
 
 /// @brief std::unique_ptr을 래핑한 독점 소유권 스마트 포인터
 /// @tparam T 관리할 객체의 타입
@@ -137,5 +135,4 @@ private:
     std::unique_ptr<T, Deleter> m_ptr;
 };
 
-} // namespace Memory
 } // namespace Excep

@@ -64,8 +64,8 @@ Source/
 
 ### Namespace Structure
 - **Root**: `Excep`
-- **Sub-namespaces**: `Excep::Math`, `Excep::Graphics`, `Excep::Memory`, `Excep::Container`
-- Always close namespaces with comments: `} // namespace Graphics` / `} // namespace Excep`
+- All engine code is contained within the `Excep` namespace with no additional nesting
+- Always close namespaces with comment: `} // namespace Excep`
 
 ### DLL Export System
 The engine uses `EXCEP_API` macro for DLL export/import:
@@ -81,7 +81,7 @@ All engine code uses custom types defined in [Core/Types.h](Source/Engine/Core/T
 - **Exception**: Windows API types (HWND, HRESULT, etc.) and STL types use standard names
 
 ### Container System
-The engine provides STL wrapper containers in the `Excep::Container` namespace:
+The engine provides STL wrapper containers in the `Excep` namespace:
 - `DynamicArray<T>` - wraps std::vector
 - `StaticArray<T, N>` - wraps std::array
 - `HashMap<K, V>` - wraps std::unordered_map
@@ -94,7 +94,7 @@ The engine provides STL wrapper containers in the `Excep::Container` namespace:
 These wrappers provide consistent naming (e.g., `Add()` instead of `push_back()`).
 
 ### Memory Management
-Custom smart pointer wrappers in `Excep::Memory` namespace:
+Custom smart pointer wrappers in `Excep` namespace:
 - `UniquePtr<T>` - wraps std::unique_ptr
 - `SharedPtr<T>` - wraps std::shared_ptr
 - `WeakPtr<T>` - wraps std::weak_ptr
@@ -157,7 +157,7 @@ The D3D11Renderer is the main rendering interface:
 1. Create header file in appropriate subdirectory under `Source/Engine/`
 2. Add `#pragma once` as first line
 3. Include required headers (at minimum `Core/Types.h` for types)
-4. Wrap in appropriate namespace(s)
+4. Wrap in `namespace Excep { ... } // namespace Excep`
 5. Add `EXCEP_API` macro to classes that should be exported
 6. Add Doxygen comments for public APIs
 7. Add to [Engine.vcxproj](Source/Engine/Engine.vcxproj) under `<ClInclude>`
