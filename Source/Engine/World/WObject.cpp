@@ -1,5 +1,6 @@
 ﻿#include "Core/Pch.h"
 #include "World/WObject.h"
+#include "World/CTransform.h"
 
 namespace Excep
 {
@@ -8,6 +9,8 @@ namespace World
 
 WObject::WObject()
 {
+    // 모든 WObject는 기본적으로 Transform을 가집니다
+    m_transform = AddComponent<CTransform>();
 }
 
 void WObject::Update()

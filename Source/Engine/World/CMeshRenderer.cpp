@@ -1,6 +1,8 @@
 ﻿#include "Core/Pch.h"
 #include "World/CMeshRenderer.h"
 #include "Graphics/D3D11/D3D11Renderer.h"
+#include "World/WObject.h"
+#include "World/CTransform.h"
 
 namespace Excep
 {
@@ -19,8 +21,8 @@ void CMeshRenderer::Render(Graphics::D3D11Renderer* renderer)
         return;
     }
 
-    // CRenderer는 CTransform을 상속받으므로 직접 GetPosition() 호출 가능
-    renderer->RenderSingleMesh(m_meshType, GetPosition());
+    // Transform은 Owner(WObject)가 소유하므로 GetOwner()->GetTransform()으로 접근
+    renderer->RenderSingleMesh(m_meshType, GetOwner()->GetTransform()->GetPosition());
 }
 
 } // namespace World

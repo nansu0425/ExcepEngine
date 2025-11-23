@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "Core/ExcepAPI.h"
-#include "World/CTransform.h"
+#include "World/CComponent.h"
 
 // Forward declaration
 namespace Excep
@@ -17,8 +17,8 @@ namespace World
 {
 
 /// @brief 렌더링을 담당하는 컴포넌트의 기본 클래스
-/// @note Transform 기능을 포함하고 있으므로 CTransform을 상속받습니다
-class EXCEP_API CRenderer : public CTransform
+/// @note Transform은 WObject가 소유하며, GetOwner()->GetTransform()으로 접근합니다
+class EXCEP_API CRenderer : public CComponent
 {
 public:
     CRenderer();

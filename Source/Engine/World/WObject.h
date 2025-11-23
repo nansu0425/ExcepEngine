@@ -10,6 +10,9 @@ namespace Excep
 namespace World
 {
 
+// Forward declaration
+class CTransform;
+
 /// @brief World에 존재하는 오브젝트의 기본 클래스
 class EXCEP_API WObject
 {
@@ -62,11 +65,17 @@ public:
     /// @brief 모든 컴포넌트의 Update를 호출합니다
     void Update();
 
+    /// @brief Transform 컴포넌트를 반환합니다
+    /// @return Transform 컴포넌트 포인터 (모든 WObject는 Transform을 가짐)
+    CTransform* GetTransform() const { return m_transform; }
+
 private:
     #pragma warning(push)
     #pragma warning(disable: 4251)
     Container::DynamicArray<Memory::UniquePtr<CComponent>> m_components;
     #pragma warning(pop)
+
+    CTransform* m_transform; // 빠른 접근을 위한 Transform 참조 (실제 소유권은 m_components에 있음)
 };
 
 } // namespace World

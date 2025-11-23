@@ -5,6 +5,7 @@
 #include "Container/DynamicArray.h"
 #include "World/World.h"
 #include "World/WObject.h"
+#include "World/CTransform.h"
 #include "World/CMeshRenderer.h"
 #include "imgui/imgui.h"
 #include "imgui/backends/imgui_impl_win32.h"
@@ -82,7 +83,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                         if (meshRenderer)
                         {
                             const float32 moveSpeed = 0.01f;
-                            Vector3 pos = meshRenderer->GetPosition();
+                            Vector3 pos = lastObj->GetTransform()->GetPosition();
 
                             if (g_inputManager->IsKeyDown(VK_LEFT))
                             {
@@ -104,7 +105,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                                 pos.y -= moveSpeed;
                             }
 
-                            meshRenderer->SetPosition(pos);
+                            lastObj->GetTransform()->SetPosition(pos);
                         }
                     }
                 }
@@ -147,7 +148,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                     WObject* obj = g_world->SpawnObject();
                     CMeshRenderer* meshRenderer = obj->AddComponent<CMeshRenderer>();
                     meshRenderer->SetMeshType(selectedType);
-                    meshRenderer->SetPosition(Vector3(spawnX, spawnY, 0.0f));
+                    obj->GetTransform()->SetPosition(Vector3(spawnX, spawnY, 0.0f));
                 }
 
                 ImGui::SameLine();
@@ -181,7 +182,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                             typeName = "Sphere";
                         }
 
-                        Vector3 pos = meshRenderer->GetPosition();
+                        Vector3 pos = lastObj->GetTransform()->GetPosition();
                         ImGui::Text("Last Object: %s at (%.2f, %.2f)", typeName, pos.x, pos.y);
                     }
                 }
